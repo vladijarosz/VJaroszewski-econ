@@ -1,0 +1,128 @@
+---
+title: "Rerservas Netas y su calculo"
+subtitle: |
+  ::: {=html}
+  <div class="title-meta">
+    <div class="meta-text">
+      Economia Monetaria
+    </div>
+author:
+  - name: "Vladimir Jaroszewski"
+date: today
+date-format: "dd/MM/yyyy"
+
+format:
+  html:
+    title-block-banner: true
+    toc: true
+    toc-location: left   # o right
+    toc-depth: 3
+    page-layout: article
+    smooth-scroll: true
+    include-in-header:
+      - header.html
+    css: styles.css
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Introduction
+
+-   Todo el análisis anterior parte de considerar las reservas brutas del BCRA, tal como figuran en su balance.
+-   Sin embargo, suele cuestionarse el uso de esta magnitud a la hora de calcular un tipo de cambio de equilibrio, porque esos fondos no estarían completamente disponibles para funcionar de reserva de los pasivos del BCRA.
+-   No existen publicaciones oficiales que muestren esta magnitud, en la mayoría de los casos son consultoras las que los publican.
+
+**¿Por qué calculamos las reservas netas?**
+
+Cuando observamos los pasivos del BCRA, notamos que muchos de ellos son obligaciones a corto plazo, que se corresponden a una gran proporción del total de reservas. \\ $\implies$ Cuántas  reservas  tenemos  realmente?
+
+\begin{center}
+\includegraphics[width=0.8\linewidth]{R Brutas.jpg}
+\end{center}
+
+Para definir las reservas netas es necesario discriminar entre aquellos activos externos que el banco central tiene en su pocecion y no posee una obligación de corto plazo contra ellas.
+
+**Calculo de Reservas Netas**
+
+Existen distintas consideraciones que se pueden encontrar entre los consultores que calculan las reservas Netas; ya que el objetivo de las reservas netas es conocer cual es la capacidad que tiene el BCRA con reservas propias de hacer frente a las distintas contingencias.
+
+Por lo tanto se pueden tomar dos consideraciones diferentes:
+
+-  Para obtener las *Reservas Netas* restar de las reservas brutas todos lo pasivos de corto plazo que pertenecen a entidades distintas al BCRA.
+
+-  Para obtener las *Reservas SUPER Netas* puede tomarse el metodo de *obligaciones a un año vistas* que consiste en restar de las reservas brutas todos lo pasivos que deben cancelarce en el proximo año.
+
+
+Como puede observarse ambas definiciones son muy cercanas, y se modifican algunas partidas a considerar entre ellas, lo relevante es recordar que las reservas netas son aquellas que el BCRA no tiene una "promesa" frente a ellas, por lo que tiene libre disponibilidad para su uso. De modo que cuando las reservas netas son negativas quiere decir que el BCRA ha prometido pagos en el corto plazo por importes mayores de lo que dispone, o ha hecho uso de partidas en monedas entranjera que si bien estan depositados en el BCRA no son su capital, como por ejemplo los encajes en dolares.
+
+
+
+-   Encajes en moneda extranjera
+-   Depositos del tesoro en moneda extranjera
+-   Deudas con org. Multilaterales (venc. a 1 año)
+-   Bopreal (venc. a 1 año)
+-   Swap
+-   DEGs
+
+![Reservas Netas, Fuente:EcoGo](res_net_ecogo.jpg)
+
+Observando la estimacion de la Consultora *EcoGo* podemos ver como al calcular las reservas netas, tienen distintas consideracion al asignar o no distintas partidas en su calculo. Otras consultoras como *PxQ* utilizan el metodo de "obligacion a un año vistas" o lo que puede llamarse "super netas".
+
+
+![Reservas Netas, *Fuente:Allaria*](res_net_Allaria.PNG)
+
+El informe de la Alic *Allaria* imputa pasivos que no son relevantes o deja de imputar otros por ejemplo el *Bopreal*. Ademas es un buen ejemplo que seguir la definicion de reservas netas conceptualmente. Podemos ver que Allaria no resta los *Depositos del tesoro en moneda extranjera*, considerandolos propios para que el BCRA cumpla con sus obligaciones, en ese caso es necesario considerar como propias las obligaciones que el tesoro tiene en el corto plazo en moneda extrangera, en particular los vencimientos frente a los organismos Internacionales.
+
+## Calculo de reservas Netas
+
+La relevancia de este metodo de calculo es que obtengo cuales son los verdaderos activos externos que posee el BCRA para hacer frente a sus obligaciones o contingencias de corto plazo.
+
+### Esquema de cálculo de reservas internacionales
+
+| Etapa | Concepto | Cálculo | Interpretación económica |
+|----------|--------------|--------------------------|----------------|
+| 1 | **Reservas Brutas** |  Oro + Divisas + DEG + Otros activos externos | Total de activos externos del BCRA |
+| 2 | **Pasivos Brutos en moneda extranjera** | Encajes + Swap + Otras obligaciones + BOPREAL + Depósitos del Gobierno | Compromisos en USD del BCRA |
+| 3 | **Reservas Netas (RIN)** | Reservas Brutas − Pasivos Brutos | Posición neta del BCRA en moneda extranjera |
+| 4 | **Reservas Líquidas** | Reservas Brutas − Activos no líquidos (DEG, Oro, Valores, Otros) | Divisas de disponibilidad inmediata |
+
+
+## Calculo de reservas Netas "a un año vista" o "Reservas SUPER netas"
+
+La relevancia de este metodo de calculo es que obtengo cuales son los verdaderos activos externos que posee el BCRA para hacer frente a sus contingencias luego de considerar las obligaciones a un año vista que posee el BCRA (y el tesoro nacional).
+
+### Cálculo de Reservas SUPER Netas (método “obligaciones a 1 año”)
+
+| Paso | Componente | Signo | ¿Qué representa? |
+|-----|--------------|-------|-----------------------|
+| 1 | **Reservas brutas** | SUMA | Stock total de activos externos del BCRA (oro, divisas, DEG, etc.) |
+| 2 | Encajes en moneda extranjera | RESTA | Depósitos en USD del sistema bancario en el BCRA (no son patrimonio del BCRA) |
+| 3 | Deudas con org. multilaterales (venc. ≤ 1 año) | RESTA | Pagos próximos (FMI, BM, BID, etc.) **Pasivos del TESORO**  |
+| 4 | BOPREAL (venc. ≤ 1 año) | RESTA |Cronograma de vencimientos del BOPREAL a 1 año|
+| 5 | Swap  | RESTA | Tramo del swap considerado no disponible o exigible |
+
+**Definición operativa:**
+
+$$
+RN_t = RB_t - Encajes_t  - DeudaMult_{t, \le 1a} - BOPREAL_{t, \le 1a} - Swap_t
+$$
+
+
+
+
+
+
+
+[Balance diario](https://www.bcra.gob.ar/PublicacionesEstadisticas/Cuadros_estandarizados_series_estadisticas.asp)
+
+[Deuda con Organismos Multilaterales](https://www.argentina.gob.ar/economia/finanzas/datos-trimestrales-de-la-deuda)
+
+[Balance BCRA](https://www.bcra.gob.ar/balances-y-agregados-monetarios/)
+
+```{python}
+#| echo: false
+print("hola")
+
+```
