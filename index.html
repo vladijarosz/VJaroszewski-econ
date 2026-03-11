@@ -1,71 +1,688 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-<meta charset="UTF-8">
-<title>Vladimir Jaroszewski - Reportes</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vladimir Jaroszewski | Economista</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #17202a;
+      --muted: #5f6c7b;
+      --line: #d9e1e8;
+      --primary: #1f4e79;
+      --primary-2: #2f6ea8;
+      --accent: #a61c1c;
+      --shadow: 0 10px 30px rgba(20, 35, 60, 0.08);
+      --radius: 18px;
+      --max: 1220px;
+    }
 
-<style>
+    * { box-sizing: border-box; }
 
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    background:#f5f6fa;
-    margin:40px;
-}
+    html { scroll-behavior: smooth; }
 
-h1{
-    text-align:center;
-}
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #eef2f6 0%, #f7f9fb 100%);
+      color: var(--text);
+    }
 
-.container{
-    max-width:900px;
-    margin:auto;
-}
+    a { color: inherit; text-decoration: none; }
 
-.card{
-    background:white;
-    padding:20px;
-    margin:15px 0;
-    border-radius:8px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
+    .shell {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
 
-a{
-    text-decoration:none;
-    color:#1f4e79;
-    font-weight:bold;
-}
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      background: #102435;
+      color: #f4f7fb;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
 
-a:hover{
-    text-decoration:underline;
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 26px;
+    }
 
-</style>
+    .brand-mark {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary-2), #153552);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: rgba(244,247,251,0.72);
+      font-size: 0.9rem;
+    }
+
+    .nav-title {
+      margin: 30px 0 10px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(244,247,251,0.5);
+    }
+
+    .nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nav a {
+      padding: 11px 12px;
+      border-radius: 12px;
+      color: rgba(244,247,251,0.9);
+      transition: 0.2s ease;
+    }
+
+    .nav a:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .sidebar-footer {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .sidebar-footer strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+
+    .sidebar-footer p {
+      margin: 0;
+      color: rgba(244,247,251,0.72);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .content {
+      padding: 34px;
+    }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      gap: 28px;
+    }
+
+    .hero {
+      background: radial-gradient(circle at top right, rgba(47,110,168,0.18), transparent 28%),
+                  linear-gradient(135deg, #ffffff 0%, #f5f8fb 100%);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 38px;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(31,78,121,0.09);
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      margin-bottom: 16px;
+    }
+
+    .hero h2 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 3.35rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 1.06rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-weight: 600;
+      transition: 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(31,78,121,0.2);
+    }
+
+    .btn-primary:hover { background: #183e62; }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--text);
+      border-color: var(--line);
+    }
+
+    .btn-secondary:hover { background: #f9fbfd; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .stat-card strong {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 6px;
+    }
+
+    .section-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .section-header p {
+      margin: 4px 0 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      grid-column: span 4;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      transition: 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(20, 35, 60, 0.1);
+    }
+
+    .card-tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      background: #edf3f9;
+      color: var(--primary);
+      margin-bottom: 14px;
+    }
+
+    .card h4 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .card p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.96rem;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .card-link {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .timeline-item .year {
+      font-size: 0.9rem;
+      color: var(--primary);
+      font-weight: 700;
+      padding-top: 2px;
+    }
+
+    .timeline-item h4 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+    }
+
+    .timeline-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .list a {
+      display: block;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      transition: 0.2s ease;
+    }
+
+    .list a:hover {
+      background: #f1f6fb;
+      border-color: #c7d7e7;
+    }
+
+    .list strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .list span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .contact {
+      background: linear-gradient(135deg, #102435 0%, #173552 100%);
+      color: white;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact h3 {
+      margin: 0 0 10px;
+      font-size: 1.5rem;
+    }
+
+    .contact p {
+      margin: 0 0 18px;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.7;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .contact-links a {
+      padding: 11px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .contact-links a:hover { background: rgba(255,255,255,0.14); }
+
+    @media (max-width: 1080px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar {
+        position: relative;
+        height: auto;
+      }
+      .sidebar-footer {
+        position: static;
+        margin-top: 22px;
+      }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .card { grid-column: span 6; }
+      .split { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .content { padding: 18px; }
+      .hero { padding: 24px; }
+      .stats { grid-template-columns: 1fr; }
+      .card { grid-column: span 12; }
+      .timeline-item { grid-template-columns: 1fr; gap: 8px; }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">VJ</div>
+        <div>
+          <h1>Vladimir Jaroszewski</h1>
+          <p>Economista · Research · Docencia</p>
+        </div>
+      </div>
 
-<div class="container">
+      <div class="nav-title">Navegación</div>
+      <nav class="nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#reportes">Reportes</a>
+        <a href="#clases">Clases y filminas</a>
+        <a href="#investigacion">Investigación</a>
+        <a href="#trayectoria">Trayectoria</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
 
-<h1>Reportes Económicos</h1>
+      <div class="nav-title">Accesos rápidos</div>
+      <nav class="nav">
+        <a href="reportes/reservas_bcra.html">Reservas BCRA</a>
+        <a href="reportes/informe_portafolio.html">Informe de portafolio</a>
+        <a href="clases/solow_swan_slides.html">Slides Solow-Swan</a>
+      </nav>
 
-<div class="card">
-<a href="codigos/Codigos_resNet/datos/WEBB - copia.html">Reservas Internacionales del BCRA</a>
-</div>
+      <div class="sidebar-footer">
+        <strong>Sitio profesional</strong>
+        <p>Espacio para publicar clases, filminas, reportes económicos, notas de investigación y material de consulta.</p>
+      </div>
+    </aside>
 
-<div class="card">
-<a href="informe_portafolio.html">Informe de Portafolio</a>
-</div>
+    <main class="content">
+      <div class="container">
+        <section class="hero" id="inicio">
+          <span class="eyebrow">Economista · UCEMA 2026 · Análisis macro y financiero</span>
+          <h2>Una base profesional para publicar reportes, clases y trabajos aplicados en economía.</h2>
+          <p>
+            Este sitio está pensado como una página central donde reunir análisis macroeconómico, reportes financieros,
+            filminas de clase, materiales docentes y proyectos de investigación. La estructura está lista para crecer con
+            nuevos documentos HTML, PDFs, presentaciones y dashboards.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#reportes">Ver reportes</a>
+            <a class="btn btn-secondary" href="#clases">Explorar clases</a>
+          </div>
+        </section>
 
-<div class="card">
-<a href="deuda.html">Deuda Pública</a>
-</div>
+        <section class="stats" aria-label="Indicadores del sitio">
+          <article class="stat-card">
+            <span>Áreas de trabajo</span>
+            <strong>Macro · Finanzas</strong>
+          </article>
+          <article class="stat-card">
+            <span>Formatos</span>
+            <strong>HTML · PDF · Slides</strong>
+          </article>
+          <article class="stat-card">
+            <span>Uso del sitio</span>
+            <strong>Docencia y research</strong>
+          </article>
+          <article class="stat-card">
+            <span>Actualización</span>
+            <strong>Modular y escalable</strong>
+          </article>
+        </section>
 
-<div class="card">
-<a href="inflacion.html">Inflación</a>
-</div>
+        <section id="reportes">
+          <div class="section-header">
+            <div>
+              <h3>Reportes económicos y financieros</h3>
+              <p>Panel central para publicar informes en HTML sobre mercado, macro, portafolio o coyuntura.</p>
+            </div>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <div class="card-tag">Macro</div>
+              <h4>Reservas Internacionales del BCRA</h4>
+              <p>Análisis de reservas netas, super netas y composición de activos externos con visualizaciones interactivas.</p>
+              <div class="card-footer">
+                <span>HTML interactivo</span>
+                <a class="card-link" href="reportes/reservas_bcra.html">Abrir</a>
+              </div>
+            </article>
 
-</div>
+            <article class="card">
+              <div class="card-tag">Portafolio</div>
+              <h4>Informe de Portafolio</h4>
+              <p>Seguimiento de rendimiento, benchmark, métricas de riesgo y composición de cartera para informes periódicos.</p>
+              <div class="card-footer">
+                <span>Reporte mensual</span>
+                <a class="card-link" href="reportes/informe_portafolio.html">Abrir</a>
+              </div>
+            </article>
 
+            <article class="card">
+              <div class="card-tag">Mercado</div>
+              <h4>Bonos, curva y spreads</h4>
+              <p>Espacio para publicaciones sobre hard dollar, ley local, duration, current yield y lectura de curva.</p>
+              <div class="card-footer">
+                <span>Próximamente</span>
+                <a class="card-link" href="#">Agregar enlace</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="clases">
+          <div class="section-header">
+            <div>
+              <h3>Clases, filminas y materiales docentes</h3>
+              <p>Repositorio público de clases para licenciatura, maestría y formación complementaria.</p>
+            </div>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <div class="card-tag">Macroeconomía</div>
+              <h4>Slides: Modelo de Solow-Swan</h4>
+              <p>Presentación en formato académico con desarrollo formal, gráficos y preguntas de cierre.</p>
+              <div class="card-footer">
+                <span>Beamer / HTML</span>
+                <a class="card-link" href="clases/solow_swan_slides.html">Abrir</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-tag">Economía monetaria</div>
+              <h4>Taller: Balance del BCRA</h4>
+              <p>Material sobre fuentes y absorción, reservas, pasivos remunerados y lectura contable del balance.</p>
+              <div class="card-footer">
+                <span>Clase aplicada</span>
+                <a class="card-link" href="#">Agregar enlace</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-tag">Métodos cuantitativos</div>
+              <h4>Notas de apoyo en R y Python</h4>
+              <p>Documentación de scripts, replicación de ejercicios y materiales para visualización de datos económicos.</p>
+              <div class="card-footer">
+                <span>Guías de trabajo</span>
+                <a class="card-link" href="#">Agregar enlace</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="investigacion" class="split">
+          <div class="panel">
+            <div class="section-header">
+              <div>
+                <h3>Investigación y líneas de trabajo</h3>
+                <p>Temas donde convergen economía aplicada, sistema previsional, informalidad y análisis financiero.</p>
+              </div>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="year">Previsión</div>
+                <div>
+                  <h4>Sistema previsional argentino y transición demográfica</h4>
+                  <p>Desarrollo de métricas de presión previsional, sostenibilidad y simulaciones de equilibrio con base en Mason y Lee.</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="year">Macro</div>
+                <div>
+                  <h4>Sector externo, reservas y balance del BCRA</h4>
+                  <p>Análisis aplicado del balance, deuda con multilaterales, encajes, BOPREAL y dinámica de reservas internacionales.</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="year">Finanzas</div>
+                <div>
+                  <h4>Valuación, bonos y asignación de portafolio</h4>
+                  <p>Seguimiento de instrumentos locales e internacionales, métricas de riesgo y construcción de informes para decisiones de inversión.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="section-header">
+              <div>
+                <h3>Biblioteca rápida</h3>
+                <p>Enlaces directos a materiales frecuentes.</p>
+              </div>
+            </div>
+            <div class="list">
+              <a href="reportes/reservas_bcra.html">
+                <strong>Reservas del BCRA</strong>
+                <span>Reporte HTML con gráficos interactivos.</span>
+              </a>
+              <a href="clases/solow_swan_slides.html">
+                <strong>Clase Solow-Swan</strong>
+                <span>Filminas de crecimiento económico.</span>
+              </a>
+              <a href="docs/cv_vladimir_jaroszewski.pdf">
+                <strong>Currículum Vitae</strong>
+                <span>Versión profesional en PDF.</span>
+              </a>
+              <a href="#">
+                <strong>Working papers</strong>
+                <span>Espacio para borradores, notas y avances.</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="trayectoria" class="panel">
+          <div class="section-header">
+            <div>
+              <h3>Perfil profesional</h3>
+              <p>Una presentación breve para visitantes del sitio, reclutadores, colegas o estudiantes.</p>
+            </div>
+          </div>
+          <p style="margin:0; color:var(--muted); line-height:1.8; max-width:980px;">
+            Vladimir Jaroszewski es economista con orientación cuantitativa, enfocado en macroeconomía aplicada,
+            finanzas y producción de materiales técnicos de alta calidad. Este sitio busca concentrar reportes, clases,
+            filminas y documentos de trabajo en una sola plataforma, con una estética clara y profesional. La estructura
+            está pensada para escalar hacia una biblioteca organizada de publicaciones, informes periódicos y recursos de docencia.
+          </p>
+        </section>
+
+        <section class="contact" id="contacto">
+          <h3>Contacto y presencia profesional</h3>
+          <p>Podés usar esta sección para dirigir a visitantes a tu CV, LinkedIn, GitHub, correo electrónico o carpeta de materiales destacados.</p>
+          <div class="contact-links">
+            <a href="mailto:tu_correo@ejemplo.com">Email</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a>
+            <a href="docs/cv_vladimir_jaroszewski.pdf">CV</a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
 </body>
 </html>
+
