@@ -6,56 +6,77 @@
   <title>Vladimir Jaroszewski | Economista</title>
   <style>
     :root {
-      --bg: #f5f7fa;
+      --bg: #f3f6f9;
       --card: #ffffff;
       --text: #1f2933;
-      --muted: #6b7280;
+      --muted: #667085;
       --line: #d9e2ec;
       --primary: #1f4e79;
       --primary-dark: #173a5a;
-      --shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+      --primary-soft: #eef4fa;
+      --shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
       --radius: 16px;
-      --max-width: 900px;
+      --max-width: 1100px;
+      --menu-width: 240px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(180deg, #f7f9fb 0%, #f1f5f9 100%);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
-    .container {
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .layout {
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 32px 20px 48px;
+      display: grid;
+      grid-template-columns: 1fr var(--menu-width);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .main {
+      min-width: 0;
     }
 
     .hero {
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 32px;
+      border-radius: 20px;
+      padding: 34px;
       box-shadow: var(--shadow);
       margin-bottom: 24px;
       text-align: center;
+      background-image: linear-gradient(135deg, rgba(31, 78, 121, 0.04), rgba(31, 78, 121, 0));
     }
 
     .hero h1 {
       margin: 0 0 8px;
-      font-size: 2rem;
+      font-size: 2.2rem;
       color: var(--primary);
+      letter-spacing: -0.02em;
     }
 
     .hero p {
       margin: 0;
       color: var(--muted);
-      font-size: 1rem;
+      font-size: 1.02rem;
     }
 
     .section {
@@ -68,9 +89,10 @@
     }
 
     .section h2 {
-      margin: 0 0 8px;
-      font-size: 1.3rem;
+      margin: 0 0 10px;
+      font-size: 1.28rem;
       color: var(--primary);
+      letter-spacing: -0.01em;
     }
 
     .section p {
@@ -85,16 +107,17 @@
 
     .link-card {
       display: block;
-      background: #f9fbfd;
+      background: #fbfcfe;
       border: 1px solid var(--line);
       border-radius: 12px;
-      padding: 16px;
+      padding: 16px 18px;
       transition: 0.2s ease;
     }
 
     .link-card:hover {
-      border-color: #b8c7d9;
-      background: #f2f7fb;
+      border-color: #bfd0e1;
+      background: var(--primary-soft);
+      transform: translateY(-1px);
     }
 
     .link-card strong {
@@ -106,14 +129,52 @@
 
     .link-card span {
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.93rem;
     }
 
-    .footer {
-      text-align: center;
+    .sidebar {
+      position: sticky;
+      top: 24px;
+    }
+
+    .menu {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .menu h3 {
+      margin: 0 0 12px;
+      font-size: 0.98rem;
+      color: var(--primary);
+    }
+
+    .menu nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .menu a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 10px;
       color: var(--muted);
-      font-size: 0.92rem;
-      padding-top: 8px;
+      font-size: 0.95rem;
+      transition: 0.2s ease;
+    }
+
+    .menu a:hover {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .menu-note {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 0;
     }
 
     .contact-links {
@@ -128,16 +189,39 @@
       border-radius: 10px;
       background: var(--primary);
       color: white;
-      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s ease;
     }
 
     .contact-links a:hover {
       background: var(--primary-dark);
     }
 
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+      padding-top: 6px;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        order: -1;
+      }
+    }
+
     @media (max-width: 700px) {
       .hero {
-        padding: 24px;
+        padding: 26px 22px;
+      }
+
+      .hero h1 {
+        font-size: 1.9rem;
       }
 
       .section {
@@ -147,73 +231,105 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="layout">
+    <main class="main">
+      <section class="hero" id="inicio">
+        <h1>Vladimir Jaroszewski</h1>
+        <p>Economista | Reportes, clases y materiales de trabajo</p>
+      </section>
 
-    <section class="hero">
-      <h1>Vladimir Jaroszewski</h1>
-      <p>Economista | Reportes, clases y materiales de trabajo</p>
-    </section>
+      <section class="section" id="sobre-mi">
+        <h2>Sobre mí</h2>
+        <p>
+          Bienvenido a mi página personal. Acá voy a compartir reportes económicos,
+          presentaciones, clases, filminas y otros materiales vinculados a economía,
+          macroeconomía y finanzas.
+        </p>
+      </section>
 
-    <section class="section">
-      <h2>Sobre mí</h2>
-      <p>
-        Bienvenido a mi página personal. Acá voy a compartir reportes económicos,
-        presentaciones, clases, filminas y otros materiales vinculados a economía,
-        macroeconomía y finanzas.
-      </p>
-    </section>
+      <section class="section" id="reportes">
+        <h2>Reportes</h2>
+        <p>Algunos trabajos y reportes en formato HTML.</p>
+        <div class="links">
+          <a class="link-card" href="reportes/reservas_bcra.html">
+            <strong>Reservas Internacionales del BCRA</strong>
+            <span>Análisis de reservas netas, super netas y evolución reciente.</span>
+          </a>
 
-    <section class="section">
-      <h2>Reportes</h2>
-      <p>Algunos trabajos y reportes en formato HTML.</p>
-      <div class="links">
-        <a class="link-card" href="reportes/reservas_bcra.html">
-          <strong>Reservas Internacionales del BCRA</strong>
-          <span>Análisis de reservas netas, super netas y evolución reciente.</span>
-        </a>
+          <a class="link-card" href="reportes/informe_portafolio.html">
+            <strong>Informe de Portafolio</strong>
+            <span>Seguimiento de rendimiento, benchmark y composición de cartera.</span>
+          </a>
+        </div>
+      </section>
 
-        <a class="link-card" href="reportes/informe_portafolio.html">
-          <strong>Informe de Portafolio</strong>
-          <span>Seguimiento de rendimiento, benchmark y composición de cartera.</span>
-        </a>
+      <section class="section" id="clases">
+        <h2>Clases y filminas</h2>
+        <p>Materiales para cursos, presentaciones y notas de apoyo.</p>
+        <div class="links">
+          <a class="link-card" href="clases/solow_swan_slides.html">
+            <strong>Modelo de Solow-Swan</strong>
+            <span>Filminas y material de apoyo sobre crecimiento económico.</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="documentos">
+        <h2>Documentos</h2>
+        <p>Accesos rápidos a otros archivos importantes.</p>
+        <div class="links">
+          <a class="link-card" href="docs/cv_vladimir_jaroszewski.pdf">
+            <strong>Currículum Vitae</strong>
+            <span>Versión en PDF de mi CV.</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="contacto">
+        <h2>Contacto</h2>
+        <p>Podés agregar acá tus enlaces profesionales.</p>
+        <div class="contact-links">
+          <a href="mailto:tu_correo@ejemplo.com">Email</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">GitHub</a>
+        </div>
+      </section>
+
+      <div class="footer">
+        Página personal de economía y materiales de trabajo.
       </div>
-    </section>
+    </main>
 
-    <section class="section">
-      <h2>Clases y filminas</h2>
-      <p>Materiales para cursos, presentaciones y notas de apoyo.</p>
-      <div class="links">
-        <a class="link-card" href="clases/solow_swan_slides.html">
-          <strong>Modelo de Solow-Swan</strong>
-          <span>Filminas y material de apoyo sobre crecimiento económico.</span>
-        </a>
+    <aside class="sidebar">
+      <div class="menu">
+        <h3>Secciones</h3>
+        <nav>
+          <a href="#inicio">Inicio</a>
+          <a href="#sobre-mi">Sobre mí</a>
+          <a href="#reportes">Reportes</a>
+          <a href="#clases">Clases y filminas</a>
+          <a href="#documentos">Documentos</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
       </div>
-    </section>
 
-    <section class="section">
-      <h2>Documentos</h2>
-      <p>Accesos rápidos a otros archivos importantes.</p>
-      <div class="links">
-        <a class="link-card" href="docs/cv_vladimir_jaroszewski.pdf">
-          <strong>Currículum Vitae</strong>
-          <span>Versión en PDF de mi CV.</span>
-        </a>
+      <div class="menu">
+        <h3>Accesos rápidos</h3>
+        <nav>
+          <a href="reportes/reservas_bcra.html">Reservas BCRA</a>
+          <a href="reportes/informe_portafolio.html">Informe de Portafolio</a>
+          <a href="clases/solow_swan_slides.html">Slides Solow-Swan</a>
+          <a href="docs/cv_vladimir_jaroszewski.pdf">CV</a>
+        </nav>
       </div>
-    </section>
 
-    <section class="section">
-      <h2>Contacto</h2>
-      <p>Podés agregar acá tus enlaces profesionales.</p>
-      <div class="contact-links">
-        <a href="mailto:tu_correo@ejemplo.com">Email</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">GitHub</a>
+      <div class="menu">
+        <h3>Perfil</h3>
+        <p class="menu-note">
+          Sitio personal para reunir materiales de economía, reportes y presentaciones en un formato simple y profesional.
+        </p>
       </div>
-    </section>
-
-    <div class="footer">
-      Página personal de economía y materiales de trabajo.
-    </div>
+    </aside>
   </div>
 </body>
 </html>
