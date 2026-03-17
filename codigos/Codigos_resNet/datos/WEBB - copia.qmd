@@ -28,31 +28,48 @@ execute:
   message: false
 ---
 
+
+
 ## Introduction
 
-A lo largo de todo el mundo los Bancos Centrales cuentan con posiciones en divisas entrangeras como parte de su activo. Esto lo hacen por distintas circuntacias y algunas de ellas pueden corresponder a las especificidades de cada pais. 
-Habitualmente los bancos centrales pueden utilizar sus posiciones en divisas extrangeras para participar del mercado de cambios (*¿son habitualmente los mercados de cambios completamente libres a lo largo del mundo?*), de esta manera el banco central puede tener una cierta influencia en el Tipo de Cambio de la divisa entrangera(habitualmente es el Dolar) debido a que es un actor con un gran volumen de dolares para intervenir en el mercado cambiario.
+Los bancos centrales son las instituciones responsables de la política monetaria de un país. Entre sus principales funciones se encuentra la gestión de la oferta monetaria y la preservación de la estabilidad macroeconómica. Como parte de sus activos, los bancos centrales poseen **reservas internacionales**, es decir, activos externos denominados en moneda extranjera, cuyo objetivo es fortalecer la capacidad de la autoridad monetaria para enfrentar desequilibrios internos o episodios de inestabilidad financiera.
 
-Cuales pueden ser las motivaciones de un banco central para intervenir en los mercados cambiarios?:
+En términos generales, los bancos centrales pueden intervenir en el **mercado de cambios** mediante la compra o venta de divisas a agentes privados. Estas operaciones pueden tener distintos objetivos macroeconómicos. Por ejemplo, cuando el banco central compra divisas emitiendo moneda doméstica, aumenta la base monetaria; mientras que cuando vende divisas, absorbe liquidez del sistema.
 
-- Acumulacion de reservas como respaldo al circulante monetario que emite (la reservas son un factor de creacion de la base moneteria)
-- Influencia en el Tipo de cambio nominal (y sus concecuencias en el pass-thrue y el tipo de cambio real de la economia).
-- Actuar por cuenta y orden del tesoro nacion yhal frente a los acuerdos en divisas convertibles con organismos internacionales.
+Estas intervenciones también tienen influencia sobre el **tipo de cambio nominal**. Incluso cuando el volumen de intervención no es particularmente elevado en relación con el tamaño total del mercado cambiario, pero las acciones del banco central suelen ser interpretadas por los agentes privados como señales sobre la orientación futura de la política económica, influyendo de esta manera en las expectativas y como concecuencia en las variables economicas.
 
+Sin embargo, los mercados cambiarios no son completamente libres en distintas economías del mundo. Existen distintos **regímenes cambiarios**, que van desde sistemas de flotación limpia —donde el banco central no interviene— hasta regímenes con distintos grados de intervención o administración del tipo de cambio.
 
-De estas motivaciones puede notarse que por un lado los bancos centrales que los bancos centrales en ocaciones actuan tanto como compradores y vendedores de divisas en el mismo momento. Por lo cual para el funcionamiento de cualquier banco central es necesaria la acumulacion de un cierto nivel de divisas extrangeras.
+## Motivaciones para intervenir en el mercado de cambios
 
+Las intervenciones cambiarias de los bancos centrales pueden responder a distintos objetivos de política económica. Entre los más importantes se encuentran:
 
-**¿Cual es es nivel de divisas que deberia poseer un banco central?**
+- Regular la liquidez monetaria mediante operaciones de compra o venta de divisas.
+- Acumular reservas internacionales como respaldo de la estabilidad financiera y del sistema monetario.
+- Influir sobre el tipo de cambio nominal, con efectos potenciales sobre la inflación a través del *pass-through* cambiario y sobre el tipo de cambio real.
+- Actuar como agente financiero del Tesoro, por ejemplo administrando pagos de deuda externa o transacciones con organismos internacionales.
 
-- Este nivel como se mide?
-- Que mide el tipo de cambio en una economia y cual es la correspondecia con el nivel de reservas?
+En consecuencia, los bancos centrales pueden actuar tanto como **compradores** como **vendedores** de divisas en el mercado. Por esta razón, para el funcionamiento normal de la política cambiaria y monetaria resulta necesario que la autoridad monetaria disponga de un cierto nivel de **reservas internacionales**.
 
+## ¿Cuál debería ser el nivel adecuado de reservas?
 
+Una cuestión central es determinar **cuál es el nivel adecuado de reservas internacionales que debería poseer un banco central**.
 
-*¿Por qué calculamos las reservas netas?*
+Esto plantea varias preguntas relevantes:
 
-Cuando observamos los pasivos del BCRA, notamos que muchos de ellos son obligaciones a corto plazo, que se corresponden a una gran proporción del total de reservas. 
+- ¿Cómo se mide el nivel de reservas internacionales?
+- ¿Qué indicadores permiten evaluar si las reservas son suficientes?
+- ¿Cuál es la relación entre el nivel de reservas y la estabilidad del tipo de cambio?
+
+En la práctica, existen distintos criterios utilizados en la literatura para evaluar la **adecuación de reservas**, como la cobertura de importaciones, la relación entre reservas y deuda externa de corto plazo, o la proporción de reservas respecto a agregados monetarios. Estos indicadores buscan evaluar la capacidad del banco central para enfrentar shocks externos o episodios de salida de capitales.
+
+## Pregunta guía
+
+> Si el banco central utiliza reservas para estabilizar el tipo de cambio, ¿qué limitaciones enfrenta si su nivel de reservas es bajo?
+
+*¿Que son las reservas netas?*
+
+Cuando observamos el balance del Banco central de la republica argentina, notamos que tiene una cantidad de pasivos corto plazo, que son la contrapartida de una gran proporción del total de las reservas internacionales, por lo cual es necesario determinar cuales son las verdaderas reservas de propiedad del BCRA que el mismo cuenta para hacer frente a las contingencias de corto plazo.
 
  $\implies$ Cuántas reservas tenemos realmente?
 
@@ -60,75 +77,93 @@ Cuando observamos los pasivos del BCRA, notamos que muchos de ellos son obligaci
 \includegraphics[width=0.8\linewidth]{R Brutas.jpg}
 \end{center}
 
-Para definir las reservas netas es necesario discriminar entre aquellos activos externos que el banco central tiene en su pocecion y no posee una obligación de corto plazo contra ellas.
-
-**Calculo de Reservas Netas**
-
-Existen distintas consideraciones que se pueden encontrar entre los consultores que calculan las reservas Netas; ya que el objetivo de las reservas netas es conocer cual es la capacidad que tiene el BCRA con reservas propias de hacer frente a las distintas contingencias.
-
-Por lo tanto se pueden tomar dos consideraciones diferentes:
-
--  Para obtener las *Reservas Netas* restar de las reservas brutas todos lo pasivos de corto plazo que pertenecen a entidades distintas al BCRA.
-
--  Para obtener las *Reservas SUPER Netas* puede tomarse el metodo de *obligaciones a un año vistas* que consiste en restar de las reservas brutas todos lo pasivos que deben cancelarce en el proximo año.
 
 
-Como puede observarse ambas definiciones son muy cercanas, y se modifican algunas partidas a considerar entre ellas, lo relevante es recordar que las reservas netas son aquellas que el BCRA no tiene una "promesa" frente a ellas, por lo que tiene libre disponibilidad para su uso. De modo que cuando las reservas netas son negativas quiere decir que el BCRA ha prometido pagos en el corto plazo por importes mayores de lo que dispone, o ha hecho uso de partidas en monedas entranjera que si bien estan depositados en el BCRA no son su capital, como por ejemplo los encajes en dolares.
+## Reservas Netas
+
+Las **reservas netas** buscan medir la verdadera capacidad que tiene el Banco Central de la República Argentina (BCRA) para utilizar sus activos externos frente a distintas contingencias macroeconómicas, como presiones cambiarias o necesidades de financiamiento externo.
+
+En términos conceptuales, las reservas netas se obtienen a partir de las **reservas internacionales brutas**, descontando aquellos pasivos de corto plazo en moneda extranjera que el banco central posee contra esas reservas.
+
+::: {.callout-tip}
+## Idea conceptual
+
+Las **reservas netas** representan aquellas divisas sobre las cuales el banco central tiene **libre disponibilidad**, es decir, activos externos que no están comprometidos frente a obligaciones de corto plazo.
+:::
+
+Por lo tanto, para calcular las reservas netas es necesario restar de las reservas internacionales brutas todos aquellos pasivos en moneda extranjera que constituyen compromisos del banco central.
+
+Entre estos pasivos pueden encontrarse, por ejemplo:
+
+- swaps de monedas con otros bancos centrales  
+- depósitos en moneda extranjera del sistema financiero (encajes)  
+- préstamos de organismos internacionales  
+- otros pasivos en divisas de corto plazo  
+
+Sin embargo, aunque la idea conceptual de reservas netas es relativamente simple, **su cálculo puede presentar diferencias entre analistas y consultoras**, debido a que no existe una definición única sobre qué partidas deben considerarse como pasivos relevantes.
+
+Lo importante es recordar que las reservas netas corresponden únicamente a aquellas divisas sobre las cuales el banco central **no tiene una promesa de pago asociada en el corto plazo**.
+
+::: {.callout-warning}
+
+Cuando las **reservas netas son negativas**, significa que el banco central posee compromisos en moneda extranjera de corto plazo por un monto **superior al de sus reservas internacionales brutas**.
+
+En estas circunstancias, el banco central ha utilizado partidas de reservas internacionales que **en realidad no eran propias**.
+
+Un ejemplo de este tipo de partidas son los **encajes en dólares del sistema bancario**. Aunque estos depósitos se registran dentro de las reservas internacionales del banco central, en realidad pertenecen a los depositantes del sistema financiero.
+:::
 
 
+## Diferencias entre estimaciones privadas
 
--   Encajes en moneda extranjera
--   Depositos del tesoro en moneda extranjera
--   Deudas con org. Multilaterales (venc. a 1 año)
--   Bopreal (venc. a 1 año)
--   Swap
--   DEGs
+Debido a estas ambigüedades metodológicas, distintas consultoras y analistas pueden obtener **estimaciones diferentes de reservas netas**, dependiendo de qué partidas consideren dentro del cálculo.
 
-![Reservas Netas, Fuente:EcoGo](res_net_ecogo.jpg)
+Distintas consultoras $\implies$ distintos cálculos.
 
-Observando la estimacion de la Consultora *EcoGo* podemos ver como al calcular las reservas netas, tienen distintas consideracion al asignar o no distintas partidas en su calculo. Otras consultoras como *PxQ* utilizan el metodo de "obligacion a un año vistas" o lo que puede llamarse "super netas".
+![Reservas Netas, Fuente: EcoGo](res_net_ecogo.jpg)
+
+![Reservas Netas, Fuente: Allaria](res_net_Allaria.PNG)
+
+Por ejemplo, el informe de la ALyC *Allaria* adopta un criterio particular para el cálculo de reservas netas. En su estimación, algunas partidas se imputan de forma distinta a otras metodologías utilizadas por consultoras o analistas del mercado.
+
+Un caso relevante es el tratamiento de los **depósitos del Tesoro en moneda extranjera**. En su cálculo, Allaria no resta estos depósitos del nivel de reservas, considerándolos como recursos que el BCRA podría utilizar para cumplir con sus obligaciones.
+
+Sin embargo, si se adopta este criterio, también sería necesario considerar las **obligaciones en moneda extranjera del Tesoro en el corto plazo**, especialmente los vencimientos frente a organismos internacionales, dado que dichos compromisos también afectan la disponibilidad efectiva de divisas en la economía.
 
 
-![Reservas Netas, *Fuente:Allaria*](res_net_Allaria.PNG)
+## Cálculo de Reservas Netas
 
-El informe de la Alic *Allaria* imputa pasivos que no son relevantes o deja de imputar otros por ejemplo el *Bopreal*. Ademas es un buen ejemplo que seguir la definicion de reservas netas conceptualmente. Podemos ver que Allaria no resta los *Depositos del tesoro en moneda extranjera*, considerandolos propios para que el BCRA cumpla con sus obligaciones, en ese caso es necesario considerar como propias las obligaciones que el tesoro tiene en el corto plazo en moneda extrangera, en particular los vencimientos frente a los organismos Internacionales.
+La relevancia de este método de cálculo radica en que permite identificar cuáles son los **verdaderos activos externos de libre disponibilidad** que posee el BCRA para hacer frente a sus obligaciones o a contingencias de corto plazo.
 
-## Calculo de reservas Netas
-
-La relevancia de este metodo de calculo es que obtengo cuales son los verdaderos activos externos que posee el BCRA para hacer frente a sus obligaciones o contingencias de corto plazo.
 
 ### Esquema de cálculo de reservas internacionales
 
 | Etapa | Concepto | Cálculo | Interpretación económica |
-|----------|--------------|--------------------------|----------------|
-| 1 | **Reservas Brutas** |  Oro + Divisas + DEG + Otros activos externos | Total de activos externos del BCRA |
-| 2 | **Pasivos Brutos en moneda extranjera** | Encajes + Swap + Otras obligaciones + BOPREAL + Depósitos del Gobierno | Compromisos en USD del BCRA |
+|------|-----------|--------------------|---------------------|
+| 1 | **Reservas Brutas** | Oro + Divisas + DEG + Otros activos externos | Total de activos externos del BCRA |
+| 2 | **Pasivos brutos en moneda extranjera** | Encajes + Swap + Otras obligaciones + BOPREAL + Depósitos del Gobierno | Compromisos en USD del BCRA |
 | 3 | **Reservas Netas (RIN)** | Reservas Brutas − Pasivos Brutos | Posición neta del BCRA en moneda extranjera |
-| 4 | **Reservas Líquidas** | Reservas Brutas − Activos no líquidos (DEG, Oro, Valores, Otros) | Divisas de disponibilidad inmediata |
+| 4 | **Reservas Líquidas** | Reservas Brutas − Activos no líquidos (DEG, oro, títulos, otros) | Divisas de disponibilidad inmediata |
 
+## Cálculo de reservas netas "a un año vista" o **reservas súper netas**
 
-## Calculo de reservas Netas "a un año vista" o "Reservas SUPER netas"
+Una extensión del cálculo anterior consiste en estimar las reservas disponibles considerando **las obligaciones que vencen en el corto plazo**, típicamente dentro de un horizonte de un año.
 
-La relevancia de este metodo de calculo es que obtengo cuales son los verdaderos activos externos que posee el BCRA para hacer frente a sus contingencias luego de considerar las obligaciones a un año vista que posee el BCRA (y el tesoro nacional).
+El objetivo de este método es aproximar cuál sería la **posición efectiva de divisas del sector público** luego de considerar los compromisos inmediatos en moneda extranjera que enfrenta tanto el BCRA como el Tesoro Nacional.
 
-### Cálculo de Reservas SUPER Netas (método “obligaciones a 1 año”)
+Este enfoque es utilizado frecuentemente por analistas de mercado para evaluar la **capacidad de pago y la sostenibilidad del régimen cambiario en el corto plazo**.
+
+### Cálculo de Reservas Súper Netas (método “obligaciones a 1 año”)
 
 | Paso | Componente | Signo | ¿Qué representa? |
-|-----|--------------|-------|-----------------------|
+|-----|----------------------|-------|------------------|
 | 1 | **Reservas brutas** | SUMA | Stock total de activos externos del BCRA (oro, divisas, DEG, etc.) |
 | 2 | Encajes en moneda extranjera | RESTA | Depósitos en USD del sistema bancario en el BCRA (no son patrimonio del BCRA) |
-| 3 | Deudas con org. multilaterales (venc. ≤ 1 año) | RESTA | Pagos próximos (FMI, BM, BID, etc.) **Pasivos del TESORO**  |
-| 4 | BOPREAL (venc. ≤ 1 año) | RESTA |Cronograma de vencimientos del BOPREAL a 1 año|
-| 5 | Swap  | RESTA | Tramo del swap considerado no disponible o exigible |
+| 3 | Deudas con organismos multilaterales (venc. ≤ 1 año) | RESTA | Pagos próximos (FMI, BM, BID, etc.), principalmente **obligaciones del Tesoro** |
+| 4 | BOPREAL (venc. ≤ 1 año) | RESTA | Cronograma de vencimientos del BOPREAL en el próximo año |
+| 5 | Swap de monedas | RESTA | Tramo del swap considerado no disponible o potencialmente exigible |
 
-**Definición operativa:**
-
-$$
-RN_t = RB_t - Encajes_t  - DeudaMult_{t, \le 1a} - BOPREAL_{t, \le 1a} - Swap_t
-$$
-
-
-
+## Links para obtener los datos
 
 [Balance diario](https://www.bcra.gob.ar/PublicacionesEstadisticas/Cuadros_estandarizados_series_estadisticas.asp)
 
@@ -139,6 +174,5 @@ $$
 [acuerdo Fondo](https://www.argentina.gob.ar/noticias/argentina-anuncia-un-programa-de-facilidades-extendidas-con-el-fondo-monetario)
 
 [Noticia Chequeado, acuerdo fondo](https://chequeado.com/el-explicador/acuerdo-con-el-fmi-que-implica-el-nuevo-endeudamiento-que-negocia-el-gobierno-de-javier-milei/)
-
 
 
