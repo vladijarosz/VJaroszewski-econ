@@ -2,8 +2,7 @@
 title: "Reservas Netas y su Cálculo"
 subtitle: "Economía Monetaria"
 author: "Vladimir Jaroszewski"
-date: "2025-03-20"
-date-format: "dd/MM/yyyy"
+date: "02-10-2026"
 format:
   html:
     title-block-banner: true
