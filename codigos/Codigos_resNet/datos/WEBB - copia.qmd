@@ -1,31 +1,35 @@
 ---
-title: "Rerservas Netas y su calculo"
-subtitle: |
-  ::: {=html}
-  <div class="title-meta">
-    <div class="meta-text">
-      Economia Monetaria
-    </div>
-author:
-  - name: "Vladimir Jaroszewski"
-date: today
+title: "Reservas Netas y su Cálculo"
+subtitle: "Economía Monetaria"
+author: "Vladimir Jaroszewski"
+date: "2025-03-20"
 date-format: "dd/MM/yyyy"
-
 format:
   html:
     title-block-banner: true
+    title-block-banner-color: "#00829A"
     toc: true
-    toc-location: left   # o right
+    toc-location: right
     toc-depth: 3
+    toc-title: "Contenido"
     page-layout: article
     smooth-scroll: true
+    css: styles.css
     include-in-header:
       - header.html
-    css: styles.css
 execute:
   echo: true
   warning: false
   message: false
+
+python:
+  py_require:
+    - pandas
+    - yfinance
+    - matplotlib
+    - seaborn
+    - openpyxl
+    - plotly
 ---
 
 
@@ -34,11 +38,8 @@ execute:
 
 Los bancos centrales son las instituciones responsables de la política monetaria de un país. Entre sus principales funciones se encuentra la gestión de la oferta monetaria y la preservación de la estabilidad macroeconómica. Como parte de sus activos, los bancos centrales poseen **reservas internacionales**, es decir, activos externos denominados en moneda extranjera, cuyo objetivo es fortalecer la capacidad de la autoridad monetaria para enfrentar desequilibrios internos o episodios de inestabilidad financiera.
 
-En términos generales, los bancos centrales pueden intervenir en el **mercado de cambios** mediante la compra o venta de divisas a agentes privados. Estas operaciones pueden tener distintos objetivos macroeconómicos. Por ejemplo, cuando el banco central compra divisas emitiendo moneda doméstica, aumenta la base monetaria; mientras que cuando vende divisas, absorbe liquidez del sistema.
+En términos generales, los bancos centrales pueden intervenir en el **mercado de cambios** mediante la compra o venta de divisas a agentes privados. Estas operaciones pueden tener distintos objetivos macroeconómicos. Por ejemplo, cuando el banco central compra divisas emitiendo moneda doméstica, aumenta la base monetaria; mientras que cuando vende divisas, absorbe liquidez del sistema. Estas intervenciones también tienen influencia sobre el **tipo de cambio nominal**. Incluso cuando el volumen de intervención no es particularmente elevado en relación con el tamaño total del mercado cambiario, pero las acciones del banco central suelen ser interpretadas por los agentes privados como señales sobre la orientación futura de la política económica, influyendo de esta manera en las expectativas y como concecuencia en las variables economicas.
 
-Estas intervenciones también tienen influencia sobre el **tipo de cambio nominal**. Incluso cuando el volumen de intervención no es particularmente elevado en relación con el tamaño total del mercado cambiario, pero las acciones del banco central suelen ser interpretadas por los agentes privados como señales sobre la orientación futura de la política económica, influyendo de esta manera en las expectativas y como concecuencia en las variables economicas.
-
-Sin embargo, los mercados cambiarios no son completamente libres en distintas economías del mundo. Existen distintos **regímenes cambiarios**, que van desde sistemas de flotación limpia —donde el banco central no interviene— hasta regímenes con distintos grados de intervención o administración del tipo de cambio.
 
 ## Motivaciones para intervenir en el mercado de cambios
 
@@ -63,15 +64,10 @@ Esto plantea varias preguntas relevantes:
 
 En la práctica, existen distintos criterios utilizados en la literatura para evaluar la **adecuación de reservas**, como la cobertura de importaciones, la relación entre reservas y deuda externa de corto plazo, o la proporción de reservas respecto a agregados monetarios. Estos indicadores buscan evaluar la capacidad del banco central para enfrentar shocks externos o episodios de salida de capitales.
 
-## Pregunta guía
+## ¿Como estan constituidas las reservas?
 
-> Si el banco central utiliza reservas para estabilizar el tipo de cambio, ¿qué limitaciones enfrenta si su nivel de reservas es bajo?
+> Cuando observamos el balance del Banco central de la republica argentina, notamos que tiene una cantidad de pasivos corto plazo, que son la contrapartida de una gran proporción del total de las reservas internacionales, por lo cual es necesario determinar cuales son las verdaderas reservas de propiedad del BCRA que el mismo cuenta para hacer frente a las contingencias de corto plazo.
 
-*¿Que son las reservas netas?*
-
-Cuando observamos el balance del Banco central de la republica argentina, notamos que tiene una cantidad de pasivos corto plazo, que son la contrapartida de una gran proporción del total de las reservas internacionales, por lo cual es necesario determinar cuales son las verdaderas reservas de propiedad del BCRA que el mismo cuenta para hacer frente a las contingencias de corto plazo.
-
- $\implies$ Cuántas reservas tenemos realmente?
 
 \begin{center}
 \includegraphics[width=0.8\linewidth]{R Brutas.jpg}
@@ -162,6 +158,152 @@ Este enfoque es utilizado frecuentemente por analistas de mercado para evaluar l
 | 3 | Deudas con organismos multilaterales (venc. ≤ 1 año) | RESTA | Pagos próximos (FMI, BM, BID, etc.), principalmente **obligaciones del Tesoro** |
 | 4 | BOPREAL (venc. ≤ 1 año) | RESTA | Cronograma de vencimientos del BOPREAL en el próximo año |
 | 5 | Swap de monedas | RESTA | Tramo del swap considerado no disponible o potencialmente exigible |
+
+# Estimacion de reservas Netas
+
+```{r}
+#| include: false
+library(reticulate)
+py_require(c("pandas", "yfinance", "matplotlib", "seaborn", "openpyxl", "plotly"))
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Mostrar código"
+
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(zoo)
+library(plotly)
+
+# Cargar datos
+archivo <- "deuda multilaterales.xlsx"
+
+deuda_multi <- read_excel(archivo, sheet = "deuMult")
+encajes     <- read_excel(archivo, sheet = "dep y encajes")
+bop_1       <- read_excel(archivo, sheet = "bopreal_1")
+bop_2       <- read_excel(archivo, sheet = "bopreal_2")
+bop_3       <- read_excel(archivo, sheet = "bopreal_3")
+bop_4       <- read_excel(archivo, sheet = "bopreal_4")
+
+# Trabajar con periodos mensuales
+bop_1$fecha <- floor_date(as.Date(bop_1$fecha), "month")
+bop_2$fecha <- floor_date(as.Date(bop_2$fecha), "month")
+bop_3$fecha <- floor_date(as.Date(bop_3$fecha), "month")
+bop_4$fecha <- floor_date(as.Date(bop_4$fecha), "month")
+
+# Merge de las 4 hojas
+bop <- bop_1 |>
+  full_join(bop_2, by = "fecha") |>
+  full_join(bop_3, by = "fecha") |>
+  full_join(bop_4, by = "fecha") |>
+  arrange(fecha)
+
+# Crear rango completo mensual
+rango_completo <- seq(min(bop$fecha), max(bop$fecha), by = "month")
+bop <- tibble(fecha = rango_completo) |>
+  left_join(bop, by = "fecha")
+
+# Suma Bopreal y rolling 12 meses hacia adelante
+bop <- bop |>
+  mutate(
+    Bopreal = rowSums(across(-fecha), na.rm = TRUE),
+    bop_año = rev(rollsum(rev(Bopreal), k = 12, fill = NA, align = "left"))
+  )
+
+# Deuda multilateral: vencimientos próximos 365 días
+deuda_multi <- deuda_multi |>
+  mutate(fecha = as.Date(fecha)) |>
+  arrange(fecha) |>
+  mutate(
+    deuda_mult = rev(rollapply(rev(vencimiento), width = 12, FUN = sum, fill = NA, align = "left")) / 1000
+  ) |>
+  select(fecha, deuda_mult)
+
+# Encajes
+encajes <- encajes |>
+  mutate(
+    fecha           = as.Date(fecha),
+    dep_Nac_ext     = dep_Nac_ext / 1000,
+    encajes_ext     = encajes_ext / 1000,
+    `otros pasivos_usd` = `otros pasivos_usd`
+  )
+
+# Swap con China - tc del Yuan
+tc_yuan <- read_excel("tc_yuan.xlsx") |>
+  mutate(
+    Fecha  = as.Date(Fecha, format = "%d.%m.%Y"),
+    fecha  = floor_date(Fecha, "month"),
+    Último = Último / 10000
+  ) |>
+  arrange(Fecha) |>
+  group_by(fecha) |>
+  slice_tail(n = 1) |>
+  ungroup() |>
+  select(fecha, Último)
+
+swap_china <- tibble(
+  fecha  = seq(as.Date("2020-01-01"), by = "month", length.out = 75),
+  yuanes = 130000000
+) |>
+  left_join(tc_yuan, by = "fecha") |>
+  mutate(swap_usd = (yuanes / Último) / 1000) |>
+  select(fecha, swap_usd)
+
+# Reservas brutas
+reservas <- read_excel("reservas.xlsx") |>
+  mutate(fecha = floor_date(as.Date(Fecha), "month")) |>
+  select(fecha, `Reservas mensuales`)
+
+# Merge final
+df_1 <- deuda_multi |>
+  left_join(encajes |> select(fecha, dep_Nac_ext, `otros pasivos_usd`, encajes_ext), by = "fecha") |>
+  left_join(reservas,   by = "fecha") |>
+  left_join(swap_china, by = "fecha") |>
+  left_join(bop |> select(fecha, bop_año), by = "fecha") |>
+  filter(fecha >= as.Date("2020-01-01"), fecha <= as.Date("2026-01-01")) |>
+  mutate(across(c(encajes_ext, swap_usd, bop_año, dep_Nac_ext, `otros pasivos_usd`, deuda_mult),
+                \(x) replace_na(x, 0)),
+         `otros pasivos_usd` = `otros pasivos_usd` - swap_usd) |>
+  select(fecha, `Reservas mensuales`, encajes_ext, swap_usd, bop_año,
+         dep_Nac_ext, `otros pasivos_usd`, deuda_mult) |>
+  mutate(
+    Res_net       = `Reservas mensuales` - encajes_ext - swap_usd - bop_año - dep_Nac_ext - `otros pasivos_usd`,
+    Res_Super_net = Res_net - deuda_mult
+  )
+
+# Gráfico
+color_net   <- "#1f4e79"
+color_super <- "#a61c1c"
+
+plot_ly(df_1, x = ~fecha) |>
+  add_lines(y = ~Res_net,       name = "Reservas Netas",
+            line = list(color = color_net,   width = 3)) |>
+  add_lines(y = ~Res_Super_net, name = "Reservas Super Netas",
+            line = list(color = color_super, width = 3)) |>
+  add_segments(x = min(df_1$fecha), xend = max(df_1$fecha),
+               y = 0, yend = 0,
+               line = list(dash = "dash", color = "black", opacity = 0.6),
+               showlegend = FALSE) |>
+  add_annotations(x = max(df_1$fecha), y = tail(df_1$Res_net, 1),
+                  text = formatC(tail(df_1$Res_net, 1), format = "f", digits = 0, big.mark = ","),
+                  showarrow = FALSE, font = list(color = color_net, size = 12)) |>
+  add_annotations(x = max(df_1$fecha), y = tail(df_1$Res_Super_net, 1),
+                  text = formatC(tail(df_1$Res_Super_net, 1), format = "f", digits = 0, big.mark = ","),
+                  showarrow = FALSE, font = list(color = color_super, size = 12)) |>
+  layout(
+    title  = list(text = "Reservas Internacionales del BCRA", x = 0,
+                  font = list(size = 18)),
+    yaxis  = list(title = "Millones de USD", tickformat = ",",
+                  showgrid = TRUE, gridcolor = "rgba(0,0,0,0.1)"),
+    xaxis  = list(showgrid = FALSE),
+    legend = list(orientation = "h", y = 1.05, x = 0),
+    margin = list(l = 40, r = 20, t = 60, b = 40)
+  )
+```
+
 
 ## Links para obtener los datos
 

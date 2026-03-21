@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;600&display=swap');
+
+/* ── BANNER ── */
+.quarto-title-block .quarto-title-banner {
+  background: #00829A;
+  padding: 2.5rem 3rem 2rem;
+  border-bottom: none;
+}
+
+/* Mover metadatos DENTRO del banner */
+.quarto-title-meta {
+  background: #00829A;
+  margin: 0 !important;
+  padding: 0 3rem 2rem !important;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.quarto-title-meta-heading {
+  font-size: 0.68rem !important;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin-bottom: 0.2rem;
+}
+
+.quarto-title-meta-contents p {
+  color: rgba(255, 255, 255, 0.85) !important;
+  margin: 0;
+}
+
+/* Suprimir la zona blanca que queda debajo del banner */
+.quarto-title-block {
+  margin-bottom: 0 !important;
+}
+
+.quarto-title-author-orcid {
+  display: none;
+}
+
+/* ── ORDEN: subtítulo arriba del título ── */
+.quarto-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.quarto-title h1.title {
+  order: 2;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 2.3rem;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  margin-bottom: 0.4rem;
+}
+
+.quarto-title .subtitle {
+  order: 1;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  margin-bottom: 0.3rem;
+  margin-top: 0;
+}
+
+/* ── ÍNDICE (TOC) ── */
+#TOC {
+  border-left: none;
+  padding-left: 0;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.toc-title {
+  font-size: 0.65rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+  color: #00829A !important;
+  margin-bottom: 1rem !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 1px solid #00829A !important;
+}
+
+#TOC ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#TOC li {
+  border-bottom: 0.5px solid var(--bs-border-color);
+  margin: 0;
+}
+
+#TOC li:last-child {
+  border-bottom: none;
+}
+
+#TOC > ul > li > a {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--bs-body-color);
+  text-decoration: none;
+  padding: 0.35rem 0;
+  transition: color 0.15s;
+}
+
+#TOC ul ul li a {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--bs-secondary-color);
+  text-decoration: none;
+  padding: 0.25rem 0 0.25rem 0.85rem;
+  transition: color 0.15s;
+}
+
+#TOC a:hover,
+#TOC a.active {
+  color: #00829A;
+  font-weight: 600;
+}
+
+/* ── BODY ── */
+body {
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'EB Garamond', Georgia, serif;
+  color: #00829A;
+}
+
+.quarto-title-block .quarto-title-banner {
+  background: #00829A;
+  padding: 1rem 2.5rem 1rem;  /* antes era 2.5rem arriba y 2rem abajo */
+  border-bottom: none;
+}
+
+.quarto-title-meta {
+  margin-top: 0.8rem !important;
+  padding: 0 !important;
+}
