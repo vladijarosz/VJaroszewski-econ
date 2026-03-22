@@ -1,0 +1,483 @@
+---
+title: "Reservas Netas y su Cálculo"
+subtitle: "Economía Monetaria"
+author: "Vladimir Jaroszewski"
+date: "02-10-2026"
+format:
+  html:
+    title-block-banner: true
+    title-block-banner-color: "#00829A"
+    toc: true
+    toc-location: right
+    toc-depth: 3
+    toc-title: "Contenido"
+    page-layout: article
+    smooth-scroll: true
+    css: styles.css
+    include-in-header:
+      - header.html
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  message: false
+
+python:
+  py_require:
+    - pandas
+    - yfinance
+    - matplotlib
+    - seaborn
+    - openpyxl
+    - plotly
+---
+
+
+
+## Introduction
+
+Los bancos centrales son las instituciones responsables de la política monetaria de un país. Entre sus principales funciones se encuentra la gestión de la oferta monetaria y la preservación de la estabilidad macroeconómica. Como parte de sus activos, los bancos centrales poseen **reservas internacionales**, es decir, activos externos denominados en moneda extranjera, cuyo objetivo es fortalecer la capacidad de la autoridad monetaria para enfrentar desequilibrios internos o episodios de inestabilidad financiera.
+
+En términos generales, los bancos centrales pueden intervenir en el **mercado de cambios** mediante la compra o venta de divisas a agentes privados. Estas operaciones pueden tener distintos objetivos macroeconómicos. Por ejemplo, cuando el banco central compra divisas emitiendo moneda doméstica, aumenta la base monetaria; mientras que cuando vende divisas, absorbe liquidez del sistema. Estas intervenciones también tienen influencia sobre el **tipo de cambio nominal**. Incluso cuando el volumen de intervención no es particularmente elevado en relación con el tamaño total del mercado cambiario, pero las acciones del banco central suelen ser interpretadas por los agentes privados como señales sobre la orientación futura de la política económica, influyendo de esta manera en las expectativas y como concecuencia en las variables economicas.
+
+
+## Motivaciones para intervenir en el mercado de cambios
+
+Las intervenciones cambiarias de los bancos centrales pueden responder a distintos objetivos de política económica. Entre los más importantes se encuentran:
+
+- Regular la liquidez monetaria mediante operaciones de compra o venta de divisas.
+- Acumular reservas internacionales como respaldo de la estabilidad financiera y del sistema monetario.
+- Influir sobre el tipo de cambio nominal, con efectos potenciales sobre la inflación a través del *pass-through* cambiario y sobre el tipo de cambio real.
+- Actuar como agente financiero del Tesoro, por ejemplo administrando pagos de deuda externa o transacciones con organismos internacionales.
+
+En consecuencia, los bancos centrales pueden actuar tanto como **compradores** como **vendedores** de divisas en el mercado. Por esta razón, para el funcionamiento normal de la política cambiaria y monetaria resulta necesario que la autoridad monetaria disponga de un cierto nivel de **reservas internacionales**.
+
+## ¿Cuál debería ser el nivel adecuado de reservas?
+
+Una cuestión central es determinar **cuál es el nivel adecuado de reservas internacionales que debería poseer un banco central**.
+
+Esto plantea varias preguntas relevantes:
+
+- ¿Cómo se mide el nivel de reservas internacionales?
+- ¿Qué indicadores permiten evaluar si las reservas son suficientes?
+- ¿Cuál es la relación entre el nivel de reservas y la estabilidad del tipo de cambio?
+
+En la práctica, existen distintos criterios utilizados en la literatura para evaluar la **adecuación de reservas**, como la cobertura de importaciones, la relación entre reservas y deuda externa de corto plazo, o la proporción de reservas respecto a agregados monetarios. Estos indicadores buscan evaluar la capacidad del banco central para enfrentar shocks externos o episodios de salida de capitales.
+
+## ¿Como estan constituidas las reservas?
+
+> Cuando observamos el balance del Banco central de la republica argentina, notamos que tiene una cantidad de pasivos corto plazo, que son la contrapartida de una gran proporción del total de las reservas internacionales, por lo cual es necesario determinar cuales son las verdaderas reservas de propiedad del BCRA que el mismo cuenta para hacer frente a las contingencias de corto plazo.
+
+
+
+```{python}
+#| code-fold: true
+#| code-summary: "Mostrar código"
+
+import pandas as pd
+#Vamos cargar la data al codigo, tenemos gran parte en este excel.
+archivo = "C:/Users/Admin/Documents/GitHub/VJaroszewski-econ/codigos/Codigos_resNet/datos/deuda multilaterales.xlsx"
+
+deuda_multi = pd.read_excel(archivo, sheet_name="deuMult")
+encajes = pd.read_excel(archivo, sheet_name="dep y encajes")
+bop_1 = pd.read_excel(archivo, sheet_name="bopreal_1")
+bop_2 = pd.read_excel(archivo, sheet_name="bopreal_2")
+bop_3 = pd.read_excel(archivo, sheet_name="bopreal_3")
+bop_4 = pd.read_excel(archivo, sheet_name="bopreal_4")
+
+bop_2['fecha'] = pd.to_datetime(bop_2['fecha'])
+bop_2['fecha'] = bop_2['fecha'].dt.to_period('M')
+
+bop_1['fecha'] = pd.to_datetime(bop_1['fecha'])
+bop_1['fecha'] = bop_1['fecha'].dt.to_period('M')
+
+bop_3['fecha'] = pd.to_datetime(bop_3['fecha'])
+bop_3['fecha'] = bop_3['fecha'].dt.to_period('M')
+
+bop_4['fecha'] = pd.to_datetime(bop_4['fecha'])
+bop_4['fecha'] = bop_4['fecha'].dt.to_period('M')
+
+bop = (
+    bop_1
+    .merge(bop_2, on='fecha', how='outer')
+    .merge(bop_3, on='fecha', how='outer')
+    .merge(bop_4, on='fecha', how='outer')
+)
+
+import pandas as pd
+
+# Asegurar que fecha sea Period mensual
+bop['fecha'] = pd.PeriodIndex(bop['fecha'], freq='M')
+
+# Poner fecha como índice
+bop = bop.set_index('fecha')
+
+# Crear rango completo mensual
+rango_completo = pd.period_range(
+    start=bop.index.min(),
+    end=bop.index.max(),
+    freq='M'
+)
+
+# Reindexar (esto agrega los meses faltantes con NaN)
+bop = bop.reindex(rango_completo)
+
+# Opcional: volver a tener fecha como columna
+bop = bop.reset_index().rename(columns={'index': 'fecha'})
+
+bop = bop.set_index('fecha')
+bop['Bopreal'] = bop.sum(axis=1)
+bop['bop_año'] = (
+    bop['Bopreal'][::-1]
+    .rolling(12)
+    .sum()[::-1]
+)
+
+deuda_multi.index=deuda_multi['fecha']
+deuda_multi['suma un año']= (
+    deuda_multi["vencimiento"][::-1]
+    .rolling("365D")
+    .sum()[::-1]
+)/1000
+
+deuda_multi = deuda_multi.drop(columns=['fecha','vencimiento'])
+deuda_multi=deuda_multi.rename(columns={'suma un año':'deuda_mult'})
+
+encajes.index=encajes['fecha']
+encajes=encajes.drop(columns=['fecha'])
+encajes['dep_Nac_ext']=encajes['dep_Nac_ext']/1000
+encajes['encajes_ext']=encajes['encajes_ext']/1000
+
+tc_yuan_excel= "C:/Users/Admin/Documents/GitHub/VJaroszewski-econ/codigos/Codigos_resNet/datos/tc_yuan.xlsx" \
+
+
+tc_yuan = pd.read_excel(tc_yuan_excel)
+
+# Normalizar fechas a inicio de mes para hacer el merge
+tc_yuan['Fecha'] = pd.to_datetime(tc_yuan['Fecha'], format='%d.%m.%Y')
+
+tc_yuan['fecha'] = tc_yuan['Fecha'].dt.to_period('M').dt.to_timestamp()
+tc_yuan['Último']=tc_yuan['Último']/10000
+
+# Tomar el último valor disponible por mes
+tc_yuan_mensual = tc_yuan.sort_values('Fecha').groupby('fecha')['Último'].last().reset_index()
+
+
+swap_china = pd.DataFrame({
+    'fecha': pd.date_range(start='2020-01-01', periods=75, freq='MS'),
+    'yuanes': 130_000_000
+})
+
+
+# Merge con swap_china
+swap_china = swap_china.merge(tc_yuan_mensual, on='fecha', how='left')
+
+# Calcular monto en usd
+swap_china['swap_usd'] = swap_china['yuanes'] / swap_china['Último']
+swap_china['swap_usd']=swap_china['swap_usd']/1000
+swap_china = swap_china.set_index('fecha')
+
+
+df=deuda_multi.merge(encajes['dep_Nac_ext'], left_index=True, right_index=True, how="left")
+df_c=df.merge(encajes['otros pasivos_usd'], left_index=True, right_index=True, how="left")
+
+reservas_excel = "C:/Users/Admin/Documents/GitHub/VJaroszewski-econ/codigos/Codigos_resNet/datos/reservas.xlsx"
+
+reservas = pd.read_excel(reservas_excel)
+
+reservas['fecha'] = pd.to_datetime(reservas['Fecha'])
+reservas = reservas.set_index('fecha')
+
+df=deuda_multi.merge(encajes['dep_Nac_ext'], left_index=True, right_index=True, how="left")
+df_c=df.merge(encajes['otros pasivos_usd'], left_index=True, right_index=True, how="left")
+
+
+df_b=df_c.merge(reservas['Reservas mensuales'], left_index=True, right_index=True, how="left")
+
+df_a=df_b.merge(swap_china['swap_usd'], left_index=True, right_index=True, how="left")
+
+
+df_1=df_a.merge(encajes['encajes_ext'], left_index=True, right_index=True, how="left")
+
+
+fecha_max = reservas['Reservas mensuales'].last_valid_index()
+
+df_1 = df_1.loc['2020-01-01':fecha_max]
+
+df_1.index = pd.to_datetime(df_1.index)
+df_1.index = df_1.index.to_period('M')
+
+df_1=df_1.merge(bop['bop_año'], left_index=True, right_index=True, how="left")
+df_1['otros pasivos_usd']=df_1['otros pasivos_usd']-df_1['swap_usd']
+df_1=df_1[['Reservas mensuales', 'encajes_ext', 'swap_usd','bop_año','dep_Nac_ext','otros pasivos_usd','deuda_mult']]
+df_1=df_1.fillna(0)
+
+
+df_1['Res_net']=df_1['Reservas mensuales']-df_1['encajes_ext']-df_1['swap_usd']-df_1['bop_año']-df_1['dep_Nac_ext']-df_1['otros pasivos_usd']
+df_1['Res_Super_net']=df_1['Reservas mensuales']-df_1['encajes_ext']-df_1['swap_usd']-df_1['bop_año']-df_1['dep_Nac_ext']-df_1['otros pasivos_usd']-df_1['deuda_mult']
+
+
+import plotly.graph_objects as go
+
+# Asegurar que el índice sea datetime
+plot_index = df_1.index.to_timestamp()
+
+fig = go.Figure()
+
+# Línea principal
+fig.add_trace(go.Scatter(
+    x=plot_index,
+    y=df_1["Reservas mensuales"],
+    mode="lines",
+    name="Reservas Brutas",
+    line=dict(color="#00829A", width=3)
+))
+
+# Línea cero
+fig.add_hline(
+    y=0,
+    line_dash="dash",
+    line_color="black",
+    opacity=0.6
+)
+
+# Último valor
+ultimo_x = plot_index[-1]
+ultimo_y = df_1["Reservas mensuales"].iloc[-1]
+
+fig.add_annotation(
+    x=ultimo_x,
+    y=ultimo_y,
+    text=f"{ultimo_y:,.0f}",
+    showarrow=False,
+    font=dict(color="#00829A", size=12)
+)
+
+# Layout
+fig.update_layout(
+    title=dict(
+        text="Reservas Brutas del BCRA",
+        x=0,
+        font=dict(size=18)
+    ),
+    yaxis_title="Millones de USD",
+    template="simple_white",
+    legend=dict(
+        orientation="h",
+        y=1.05,
+        x=0
+    ),
+    yaxis=dict(
+        tickformat=",",
+        showgrid=True,
+        gridcolor="rgba(0,0,0,0.1)"
+    ),
+    xaxis=dict(
+        showgrid=False
+    ),
+    margin=dict(l=40, r=20, t=60, b=40)
+)
+
+fig.show()
+
+```
+
+
+
+## Reservas Netas
+
+Las **reservas netas** buscan medir la verdadera capacidad que tiene el Banco Central de la República Argentina (BCRA) para utilizar sus activos externos frente a distintas contingencias macroeconómicas, como presiones cambiarias o necesidades de financiamiento externo.
+
+En términos conceptuales, las reservas netas se obtienen a partir de las **reservas internacionales brutas**, descontando aquellos pasivos de corto plazo en moneda extranjera que el banco central posee contra esas reservas.
+
+::: {.callout-tip}
+## Idea conceptual
+
+Las **reservas netas** representan aquellas divisas sobre las cuales el banco central tiene **libre disponibilidad**, es decir, activos externos que no están comprometidos frente a obligaciones de corto plazo.
+:::
+
+Por lo tanto, para calcular las reservas netas es necesario restar de las reservas internacionales brutas todos aquellos pasivos en moneda extranjera que constituyen compromisos del banco central.
+
+Entre estos pasivos pueden encontrarse, por ejemplo:
+
+- swaps de monedas con otros bancos centrales  
+- depósitos en moneda extranjera del sistema financiero (encajes)  
+- préstamos de organismos internacionales  
+- otros pasivos en divisas de corto plazo  
+
+Sin embargo, aunque la idea conceptual de reservas netas es relativamente simple, **su cálculo puede presentar diferencias entre analistas y consultoras**, debido a que no existe una definición única sobre qué partidas deben considerarse como pasivos relevantes.
+
+Lo importante es recordar que las reservas netas corresponden únicamente a aquellas divisas sobre las cuales el banco central **no tiene una promesa de pago asociada en el corto plazo**.
+
+::: {.callout-warning}
+
+Cuando las **reservas netas son negativas**, significa que el banco central posee compromisos en moneda extranjera de corto plazo por un monto **superior al de sus reservas internacionales brutas**.
+
+En estas circunstancias, el banco central ha utilizado partidas de reservas internacionales que **en realidad no eran propias**.
+
+Un ejemplo de este tipo de partidas son los **encajes en dólares del sistema bancario**. Aunque estos depósitos se registran dentro de las reservas internacionales del banco central, en realidad pertenecen a los depositantes del sistema financiero.
+:::
+
+
+## Diferencias entre estimaciones privadas
+
+Debido a estas ambigüedades metodológicas, distintas consultoras y analistas pueden obtener **estimaciones diferentes de reservas netas**, dependiendo de qué partidas consideren dentro del cálculo.
+
+Distintas consultoras $\implies$ distintos cálculos.
+
+![Reservas Netas, Fuente: EcoGo](res_net_ecogo.jpg)
+
+![Reservas Netas, Fuente: Allaria](res_net_Allaria.PNG)
+
+Por ejemplo, el informe de la ALyC *Allaria* adopta un criterio particular para el cálculo de reservas netas. En su estimación, algunas partidas se imputan de forma distinta a otras metodologías utilizadas por consultoras o analistas del mercado.
+
+Un caso relevante es el tratamiento de los **depósitos del Tesoro en moneda extranjera**. En su cálculo, Allaria no resta estos depósitos del nivel de reservas, considerándolos como recursos que el BCRA podría utilizar para cumplir con sus obligaciones.
+
+Sin embargo, si se adopta este criterio, también sería necesario considerar las **obligaciones en moneda extranjera del Tesoro en el corto plazo**, especialmente los vencimientos frente a organismos internacionales, dado que dichos compromisos también afectan la disponibilidad efectiva de divisas en la economía.
+
+
+## Cálculo de Reservas Netas
+
+La relevancia de este método de cálculo radica en que permite identificar cuáles son los **verdaderos activos externos de libre disponibilidad** que posee el BCRA para hacer frente a sus obligaciones o a contingencias de corto plazo.
+
+
+### Esquema de cálculo de reservas internacionales
+
+| Etapa | Concepto | Cálculo | Interpretación económica |
+|------|-----------|--------------------|---------------------|
+| 1 | **Reservas Brutas** | Oro + Divisas + DEG + Otros activos externos | Total de activos externos del BCRA |
+| 2 | **Pasivos brutos en moneda extranjera** | Encajes + Swap + Otras obligaciones + BOPREAL + Depósitos del Gobierno | Compromisos en USD del BCRA |
+| 3 | **Reservas Netas (RIN)** | Reservas Brutas − Pasivos Brutos | Posición neta del BCRA en moneda extranjera |
+| 4 | **Reservas Líquidas** | Reservas Brutas − Activos no líquidos (DEG, oro, títulos, otros) | Divisas de disponibilidad inmediata |
+
+## Cálculo de reservas netas "a un año vista" o **reservas súper netas**
+
+Una extensión del cálculo anterior consiste en estimar las reservas disponibles considerando **las obligaciones que vencen en el corto plazo**, típicamente dentro de un horizonte de un año.
+
+El objetivo de este método es aproximar cuál sería la **posición efectiva de divisas del sector público** luego de considerar los compromisos inmediatos en moneda extranjera que enfrenta tanto el BCRA como el Tesoro Nacional.
+
+Este enfoque es utilizado frecuentemente por analistas de mercado para evaluar la **capacidad de pago y la sostenibilidad del régimen cambiario en el corto plazo**.
+
+### Cálculo de Reservas Súper Netas (método “obligaciones a 1 año”)
+
+| Paso | Componente | Signo | ¿Qué representa? |
+|-----|----------------------|-------|------------------|
+| 1 | **Reservas brutas** | SUMA | Stock total de activos externos del BCRA (oro, divisas, DEG, etc.) |
+| 2 | Encajes en moneda extranjera | RESTA | Depósitos en USD del sistema bancario en el BCRA (no son patrimonio del BCRA) |
+| 3 | Deudas con organismos multilaterales (venc. ≤ 1 año) | RESTA | Pagos próximos (FMI, BM, BID, etc.), principalmente **obligaciones del Tesoro** |
+| 4 | BOPREAL (venc. ≤ 1 año) | RESTA | Cronograma de vencimientos del BOPREAL en el próximo año |
+| 5 | Swap de monedas | RESTA | Tramo del swap considerado no disponible o potencialmente exigible |
+
+# Estimacion de reservas Netas
+
+
+```{python}
+#| code-fold: true
+#| code-summary: "Mostrar código"
+
+import plotly.graph_objects as go
+
+# Convert index to datetime
+plot_index = df_1.index.to_timestamp()
+
+color_net = "#1f4e79"
+color_super = "#a61c1c"
+
+fig = go.Figure()
+
+fig.add_trace(go.Scatter(
+    x=plot_index,
+    y=df_1['Res_net'],
+    mode='lines',
+    name='Reservas Netas',
+    line=dict(color=color_net, width=3)
+))
+
+fig.add_trace(go.Scatter(
+    x=plot_index,
+    y=df_1['Res_Super_net'],
+    mode='lines',
+    name='Reservas Super Netas',
+    line=dict(color=color_super, width=3)
+))
+
+fig.add_shape(
+    type="line",
+    x0=plot_index.min(),
+    x1=plot_index.max(),
+    y0=0,
+    y1=0,
+    line=dict(
+        color="black",
+        width=1,
+        dash="dash"
+    )
+)
+
+# Últimos valores
+fig.add_annotation(
+    x=plot_index[-1],
+    y=df_1['Res_net'].iloc[-1],
+    text=f"{df_1['Res_net'].iloc[-1]:,.0f}",
+    showarrow=False,
+    font=dict(color=color_net, size=12)
+)
+
+fig.add_annotation(
+    x=plot_index[-1],
+    y=df_1['Res_Super_net'].iloc[-1],
+    text=f"{df_1['Res_Super_net'].iloc[-1]:,.0f}",
+    showarrow=False,
+    font=dict(color=color_super, size=12)
+)
+
+fig.update_layout(
+
+    title=dict(
+        text="Reservas Internacionales del BCRA",
+        x=0,
+        font=dict(size=25)
+    ),
+
+    yaxis_title="Millones de USD",
+
+    template="simple_white",
+
+    legend=dict(
+        orientation="h",
+        y=1.05,
+        x=0
+    ),
+
+    yaxis=dict(
+        tickformat=",",
+        showgrid=True,
+        gridcolor="rgba(0,0,0,0.1)"
+    ),
+
+    xaxis=dict(
+        showgrid=False
+    ),
+
+    margin=dict(l=40, r=20, t=60, b=40)
+
+)
+
+fig.show()
+
+```
+
+
+## Links para obtener los datos
+
+[Balance diario](https://www.bcra.gob.ar/PublicacionesEstadisticas/Cuadros_estandarizados_series_estadisticas.asp)
+
+[Deuda con Organismos Multilaterales](https://www.argentina.gob.ar/economia/finanzas/datos-trimestrales-de-la-deuda)
+
+[Balance BCRA](https://www.bcra.gob.ar/balances-y-agregados-monetarios/)
+
+[acuerdo Fondo](https://www.argentina.gob.ar/noticias/argentina-anuncia-un-programa-de-facilidades-extendidas-con-el-fondo-monetario)
+
+[Noticia Chequeado, acuerdo fondo](https://chequeado.com/el-explicador/acuerdo-con-el-fmi-que-implica-el-nuevo-endeudamiento-que-negocia-el-gobierno-de-javier-milei/)
+
+
