@@ -1,0 +1,282 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+
+```{python}
+#| code-fold: true
+#| code-summary: "Mostrar código"
+
+import pandas as pd
+import numpy as np
+import yfinance as yf
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+
+import pandas as pd
+import numpy as np
+import yfinance as yf
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+#Vamos cargar la data al codigo, tenemos gran parte en este excel.
+archivo = "deuda multilaterales.xlsx" 
+
+deuda_multi = pd.read_excel(archivo, sheet_name="deuMult")
+encajes = pd.read_excel(archivo, sheet_name="dep y encajes")
+bop_1 = pd.read_excel(archivo, sheet_name="bopreal_1")
+bop_2 = pd.read_excel(archivo, sheet_name="bopreal_2")
+bop_3 = pd.read_excel(archivo, sheet_name="bopreal_3")
+bop_4 = pd.read_excel(archivo, sheet_name="bopreal_4")
+
+
+#Vamos a trabajar con periodos mensuales, por lo cual configuramos la fecha de esta forma
+
+bop_2['fecha'] = pd.to_datetime(bop_2['fecha'])
+bop_2['fecha'] = bop_2['fecha'].dt.to_period('M')
+
+bop_1['fecha'] = pd.to_datetime(bop_1['fecha'])
+bop_1['fecha'] = bop_1['fecha'].dt.to_period('M')
+
+bop_3['fecha'] = pd.to_datetime(bop_3['fecha'])
+bop_3['fecha'] = bop_3['fecha'].dt.to_period('M')
+
+bop_4['fecha'] = pd.to_datetime(bop_4['fecha'])
+bop_4['fecha'] = bop_4['fecha'].dt.to_period('M')
+
+
+#Hacemos el merge de las columnas que nos interesan en base a la columna fecha
+
+bop = (
+    bop_1
+    .merge(bop_2, on='fecha', how='outer')
+    .merge(bop_3, on='fecha', how='outer')
+    .merge(bop_4, on='fecha', how='outer')
+)
+
+
+
+# Poner fecha como índice
+bop = bop.set_index('fecha')
+
+# Crear rango completo mensual, ya que que los flujos de fondos del bopreal pueden saltear meses
+
+rango_completo = pd.period_range(
+    start=bop.index.min(),
+    end=bop.index.max(),
+    freq='M'
+)
+
+# Reindexar (esto agrega los meses faltantes con NaN)
+bop = bop.reindex(rango_completo)
+
+
+# Suma de los vencimientos de los Bopreal a 1 año vistas
+
+bop['Bopreal'] = bop.sum(axis=1)
+bop['bop_año'] = (
+    bop['Bopreal'][::-1]
+    .rolling(12)
+    .sum()[::-1]
+)
+
+
+# Trabajamos con las Deudas con los Org. Multilaterales
+
+
+deuda_multi.index=deuda_multi['fecha']
+deuda_multi['suma un año']= (
+    deuda_multi["vencimiento"][::-1]
+    .rolling("365D")
+    .sum()[::-1]
+)/1000
+
+deuda_multi = deuda_multi.drop(columns=['fecha','vencimiento'])
+deuda_multi=deuda_multi.rename(columns={'suma un año':'deuda_mult'})
+
+
+#Trabajamos con los encajes
+
+encajes.index=encajes['fecha']
+encajes=encajes.drop(columns=['fecha'])
+encajes['dep_Nac_ext']=encajes['dep_Nac_ext']/1000
+encajes['encajes_ext']=encajes['encajes_ext']/1000
+
+
+
+
+
+#Vamos con el Swap con China
+
+#tc del Yuan
+
+tc_yuan_excel= "tc_yuan.xlsx"
+
+tc_yuan = pd.read_excel(tc_yuan_excel)
+
+# Normalizar fechas a inicio de mes para hacer el merge
+tc_yuan['Fecha'] = pd.to_datetime(tc_yuan['Fecha'], format='%d.%m.%Y')
+
+tc_yuan['fecha'] = tc_yuan['Fecha'].dt.to_period('M').dt.to_timestamp()
+tc_yuan['Último']=tc_yuan['Último']/10000
+
+# Tomar el último valor disponible por mes
+tc_yuan_mensual = tc_yuan.sort_values('Fecha').groupby('fecha')['Último'].last().reset_index()
+
+
+swap_china = pd.DataFrame({
+    'fecha': pd.date_range(start='2020-01-01', periods=75, freq='MS'),
+    'yuanes': 130_000_000
+})
+
+
+# Merge con swap_china
+swap_china = swap_china.merge(tc_yuan_mensual, on='fecha', how='left')
+
+# Calcular monto en usd
+swap_china['swap_usd'] = swap_china['yuanes'] / swap_china['Último']
+swap_china['swap_usd']=swap_china['swap_usd']/1000
+swap_china = swap_china.set_index('fecha')
+
+
+
+#trabajamos con las Reservas Brutas
+
+
+reservas_excel="reservas.xlsx"
+
+reservas = pd.read_excel(reservas_excel)
+
+
+reservas['fecha'] = pd.to_datetime(reservas['Fecha'])
+reservas=reservas.set_index('fecha')
+
+
+
+#hacemos todos los merge
+
+
+df=deuda_multi.merge(encajes['dep_Nac_ext'], left_index=True, right_index=True, how="left")
+df_c=df.merge(encajes['otros pasivos_usd'], left_index=True, right_index=True, how="left")
+
+
+df_b=df_c.merge(reservas['Reservas mensuales'], left_index=True, right_index=True, how="left")
+
+df_a=df_b.merge(swap_china['swap_usd'], left_index=True, right_index=True, how="left")
+
+df_1=df_a.merge(encajes['encajes_ext'], left_index=True, right_index=True, how="left")
+
+
+df_1=df_1['2020-01-01':'2026-01-01']
+df_1.index = pd.to_datetime(df_1.index)
+df_1.index = df_1.index.to_period('M')
+
+df_1=df_1.merge(bop['bop_año'], left_index=True, right_index=True, how="left")
+df_1['otros pasivos_usd']=df_1['otros pasivos_usd']-df_1['swap_usd']
+df_1=df_1[['Reservas mensuales', 'encajes_ext', 'swap_usd','bop_año','dep_Nac_ext','otros pasivos_usd','deuda_mult']]
+df_1=df_1.fillna(0)
+
+
+df_1['Res_net']=df_1['Reservas mensuales']-df_1['encajes_ext']-df_1['swap_usd']-df_1['bop_año']-df_1['dep_Nac_ext']-df_1['otros pasivos_usd']
+df_1['Res_Super_net']=df_1['Reservas mensuales']-df_1['encajes_ext']-df_1['swap_usd']-df_1['bop_año']-df_1['dep_Nac_ext']-df_1['otros pasivos_usd']-df_1['deuda_mult']
+
+```
+
+
+```{python}
+#| code-fold: true
+#| code-summary: "Mostrar código"
+
+
+import plotly.graph_objects as go
+
+# Convert index to datetime
+plot_index = df_1.index.to_timestamp()
+
+color_net = "#1f4e79"
+color_super = "#a61c1c"
+
+fig = go.Figure()
+
+fig.add_trace(go.Scatter(
+    x=plot_index,
+    y=df_1['Res_net'],
+    mode='lines',
+    name='Reservas Netas',
+    line=dict(color=color_net, width=3)
+))
+
+fig.add_trace(go.Scatter(
+    x=plot_index,
+    y=df_1['Res_Super_net'],
+    mode='lines',
+    name='Reservas Super Netas',
+    line=dict(color=color_super, width=3)
+))
+
+# Línea cero
+fig.add_hline(
+    y=0,
+    line_dash="dash",
+    line_color="black",
+    opacity=0.6
+)
+
+# Últimos valores
+fig.add_annotation(
+    x=plot_index[-1],
+    y=df_1['Res_net'].iloc[-1],
+    text=f"{df_1['Res_net'].iloc[-1]:,.0f}",
+    showarrow=False,
+    font=dict(color=color_net, size=12)
+)
+
+fig.add_annotation(
+    x=plot_index[-1],
+    y=df_1['Res_Super_net'].iloc[-1],
+    text=f"{df_1['Res_Super_net'].iloc[-1]:,.0f}",
+    showarrow=False,
+    font=dict(color=color_super, size=12)
+)
+
+fig.update_layout(
+
+    title=dict(
+        text="Reservas Internacionales del BCRA",
+        x=0,
+        font=dict(size=18)
+    ),
+
+    yaxis_title="Millones de USD",
+
+    template="simple_white",
+
+    legend=dict(
+        orientation="h",
+        y=1.05,
+        x=0
+    ),
+
+    yaxis=dict(
+        tickformat=",",
+        showgrid=True,
+        gridcolor="rgba(0,0,0,0.1)"
+    ),
+
+    xaxis=dict(
+        showgrid=False
+    ),
+
+    margin=dict(l=40, r=20, t=60, b=40)
+
+)
+
+fig.show()
+
+```
+
