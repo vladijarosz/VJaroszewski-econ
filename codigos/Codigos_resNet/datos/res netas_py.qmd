@@ -377,6 +377,7 @@ Este enfoque es utilizado frecuentemente por analistas de mercado para evaluar l
 
 import plotly.graph_objects as go
 
+
 # Convert index to datetime
 plot_index = df_1.index.to_timestamp()
 
