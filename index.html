@@ -204,10 +204,6 @@ section.active{display:block}
         Contacto
       </a>
     </div>
-  </nav>
-  <div class="sidebar-cta">
-    <a onclick="nav('contacto',null)">Consultar disponibilidad →</a>
-  </div>
 </aside>
 
 <main class="main">
@@ -227,17 +223,17 @@ section.active{display:block}
     <div class="section-label" style="margin-top:8px">Últimos reportes</div>
     <div class="preview-card" onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-coyuntura'),80)">
       <div class="preview-card-body">
-        <h4>Perspectivas macroeconómicas — Q1 2025</h4>
-        <p>Ciclo económico, nivel de actividad, inflación y proyecciones para el primer trimestre de 2025.</p>
-        <div class="preview-meta"><span class="pdate">Mar 2025</span><span class="tag macro">Coyuntura</span></div>
+        <h4>Reservas Netas y su cálculo</h4>
+        <p>Construcción de reservas netas y super netas del BCRA, con descomposición de activos y pasivos en moneda extranjera para evaluar su disponibilidad efectiva.</p>
+        <div class="preview-meta"><span class="pdate">Feb 2025</span><span class="tag macro">Coyuntura</span></div>
       </div>
       <div class="preview-arrow">→</div>
     </div>
-    <div class="preview-card" onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-financieros'),80)">
+    <div class="preview-card" onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-coyuntura'),80)">
       <div class="preview-card-body">
-        <h4>Spreads soberanos y flujos de capital</h4>
-        <p>Diferenciales de riesgo, ciclo de tasas global y posicionamiento de inversores en mercados emergentes.</p>
-        <div class="preview-meta"><span class="pdate">Feb 2025</span><span class="tag mercado">Financiero</span></div>
+        <h4>Letras intransferibles y balance del BCRA</h4>
+        <p>Análisis del rol de las letras intransferibles en el balance del BCRA y su impacto sobre la calidad de los activos y la sostenibilidad monetaria..</p>
+        <div class="preview-meta"><span class="pdate">Mar 2026</span><span class="tag macro">Coyuntura</span></div>
       </div>
       <div class="preview-arrow">→</div>
     </div>
@@ -334,9 +330,8 @@ section.active{display:block}
         <p>Economista con formación en macroeconomía aplicada y finanzas. Trabajo en el cruce entre el análisis académico riguroso y la toma de decisiones en contextos reales y dinámicos.</p>
         <p>Tengo experiencia en análisis financiero, modelización económica y procesamiento de datos. He desarrollado herramientas cuantitativas y reportes orientados a la evaluación de escenarios macro-financieros para la toma de decisiones.</p>
         <div class="cred-row">
-          <span class="cred"><strong>UCEMA</strong> Maestría en Economía</span>
+          <span class="cred"><strong>UCEMA</strong> Maestría en Economía(En curso)</span>
           <span class="cred"><strong>UNC</strong> Lic. en Economía</span>
-          <span class="cred"><strong>AAEP</strong> Congreso 2025</span>
         </div>
       </div>
       <div class="about-av">VJ</div>
@@ -362,20 +357,24 @@ section.active{display:block}
     </div>
   </section>
 
-  <!-- CONTACTO -->
-  <section id="sec-contacto">
-    <div class="page-hero">
-      <h2>Contacto</h2>
-      <p>Si estás buscando análisis económico orientado a la acción, escribime. Consulta inicial sin costo.</p>
-    </div>
-    <div class="contact-layout">
-      <div class="contact-block">
-        <h4>Escribime directamente</h4>
-        <p>Para consultas sobre servicios, presupuestos o para ver si puedo ayudarte con lo que necesitás.</p>
-        <a class="contact-link" href="/cdn-cgi/l/email-protection#0a606b786579706f7d7961637c666b6e636763784a6d676b636624696567">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><polyline points="4,4 12,13 20,4"/></svg>
-          <span class="__cf_email__" data-cfemail="deb4bfacb1ada4bba9adb5b7a8b2bfbab7b3b7ac9eb9b3bfb7b2f0bdb1b3">[email&#160;protected]</span>
-        </a>
+<!-- CONTACTO -->
+<section id="sec-contacto">
+  <div class="page-hero">
+    <h2>Contacto</h2>
+  </div>
+
+  <div class="contact-layout">
+    <div class="contact-block">
+      <h4>Escribime directamente</h4>
+      <p>Para consultas sobre servicios, presupuestos o para ver si puedo ayudarte con lo que necesitás.</p>
+
+      <a class="contact-link" href="mailto:jaroszewskivladimir@gmail.com">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 4h16v16H4z"/>
+          <polyline points="4,4 12,13 20,4"/>
+        </svg>
+        <span>jaroszewskivladimir@gmail.com</span>
+      </a>
         <a class="contact-link" href="https://linkedin.com/in/vladimir-jaroszewski" target="_blank">
           <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
           LinkedIn
