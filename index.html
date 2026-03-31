@@ -216,7 +216,7 @@ section.active{display:block}
   <section id="sec-inicio" class="active">
     <div class="hero">
       <div class="hero-eyebrow">Análisis · Consultoría · Investigación</div>
-      <h2>Claridad económica<br>para <em>mejores decisiones</em></h2>
+      <h2>Analisis Economico</em></h2>
       <p class="hero-lead">Soy economista especializado en análisis macrofinanciero. Trabajo con inversores y empresas que necesitan entender el contexto económico para tomar decisiones con mayor precisión.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" onclick="nav('reportes',null)">Ver reportes →</a>
@@ -250,41 +250,38 @@ section.active{display:block}
       <p>Análisis propios sobre economía argentina e internacional. Hacé clic en cada reporte para leer su contenido.</p>
     </div>
 
-    <!-- COYUNTURA -->
-    <div class="report-area" id="area-coyuntura">
-      <div class="area-title">Reportes de coyuntura</div>
+<!-- COYUNTURA -->
+<div class="report-area" id="area-coyuntura">
+  <div class="area-title">Reportes de coyuntura</div>
 
-      <div class="report-full">
-        <div class="report-full-header" onclick="toggleReport(this)">
-          <div class="rh-body">
-            <div class="rh-title">Política monetaria — Q1 2025</div>
-            <div class="rh-desc">Análisis de la política del BCRA, tasas de interés, dinámica de la base monetaria y perspectivas para el trimestre.</div>
-            <div class="rh-meta"><span class="pdate">Mar 2025</span><span class="tag macro">Monetario</span></div>
-          </div>
-          <button class="rh-toggle">Leer reporte ↓</button>
+  <div class="report-full" id="reporte-reservas-netas">
+    
+    <div class="report-full-header">
+      <div class="rh-body">
+        <div class="rh-title">Reservas internacionales y su cálculo</div>
+        <div class="rh-desc">
+          Construcción de reservas netas y super netas del BCRA, con descomposición de activos y pasivos en moneda extranjera para evaluar su disponibilidad efectiva.
         </div>
-        <div class="report-sections">
-          <div class="rs-item">
-            <div class="rs-num">1</div>
-            <div class="rs-content"><strong>Tasa de política monetaria</strong><span>El BCRA sostuvo tasas reales positivas durante el trimestre, en línea con el objetivo de desinflación. La tasa de política monetaria se redujo gradualmente desde el 133% TNA de fines de 2023, acompañando la desaceleración inflacionaria. El spread entre tasas activas y pasivas del sistema financiero se comprimió.</span></div>
-          </div>
-          <div class="rs-item">
-            <div class="rs-num">2</div>
-            <div class="rs-content"><strong>Base monetaria y agregados</strong><span>La base monetaria mostró expansión estacional en enero y febrero, compensada por colocación de LEFIs. Los agregados más amplios (M2 y M3) crecieron por debajo de la inflación, lo que implica una contracción real de la liquidez en la economía. La demanda de dinero se recupera gradualmente.</span></div>
-          </div>
-          <div class="rs-item">
-            <div class="rs-num">3</div>
-            <div class="rs-content"><strong>Pasivos remunerados del BCRA</strong><span>El stock de LEFIs continuó siendo el principal instrumento de esterilización. La reducción del déficit cuasifiscal fue uno de los logros del programa: el costo de los pasivos remunerados cayó en términos reales, aunque el stock en pesos permanece elevado como proporción del PBI.</span></div>
-          </div>
-          <div class="rs-item">
-            <div class="rs-num">4</div>
-            <div class="rs-content"><strong>Perspectivas</strong><span>El escenario base proyecta nuevas bajas de tasa a medida que la inflación converja, condicionadas al cumplimiento de las metas fiscales y a la acumulación de reservas. Un riesgo relevante es la presión cambiaria sobre las tasas si la brecha se amplía nuevamente.</span></div>
-          </div>
+        <div class="rh-meta">
+          <span class="pdate">2026</span>
+          <span class="tag macro">Monetario</span>
         </div>
       </div>
     </div>
 
-    <!-- FINANCIEROS -->
+    <div class="report-link-row">
+      <a href="https://vladimir-jaroszewski.github.io/codigos/Codigos_resNet/datos/res%20netas_py.html" target="_blank" class="btn btn-outline">
+        Ver análisis completo →
+      </a>
+    </div>
+
+  </div>
+
+  
+
+</div> <!-- ✅ cierre correcto -->
+
+<!-- FINANCIEROS -->
     <div class="report-area" id="area-financieros">
       <div class="area-title">Reportes financieros</div>
 
