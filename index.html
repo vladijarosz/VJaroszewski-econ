@@ -446,18 +446,49 @@ section.active{display:block}
 </main>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
 function nav(sec, el) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-  document.getElementById('sec-' + sec).classList.add('active');
-  if (el) {
-    document.querySelectorAll('nav a[data-sec]').forEach(a => a.classList.remove('active'));
-    el.classList.add('active');
+
+  const target = document.getElementById('sec-' + sec);
+  if (target) {
+    target.classList.add('active');
   }
-  document.querySelector('.main').scrollTop = 0;
+
+  document.querySelectorAll('nav a[data-sec]').forEach(a => a.classList.remove('active'));
+
+  if (el && el.matches('[data-sec]')) {
+    el.classList.add('active');
+  } else {
+    const navLink = document.querySelector(`nav a[data-sec="${sec}"]`);
+    if (navLink) navLink.classList.add('active');
+  }
+
+  const main = document.querySelector('.main');
+  if (main) main.scrollTop = 0;
 }
+
 function toggleReport(header) {
-  const sections = header.parentElement.querySelector('.report-sections');
+  const report = header.parentElement;
+  const sections = report.querySelector('.report-sections');
   const btn = header.querySelector('.rh-toggle');
+
+  if (!sections || !btn) return;
+
   const isOpen = sections.classList.toggle('open');
-  btn.textContent = isOpen ? 'C
+  btn.textContent = isOpen ? 'Cerrar reporte ↑' : 'Leer reporte ↓';
+}
+
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const firstNav = document.querySelector('nav a[data-sec="inicio"]');
+  if (firstNav) firstNav.classList.add('active');
+});
+</script>
