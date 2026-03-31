@@ -192,13 +192,9 @@ section.active{display:block}
         Reportes
       </a>
       <div class="nav-sub">
-        <a onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-macro'),80)">↳ Coyuntura macro</a>
-        <a onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-mercados'),80)">↳ Mercados financieros</a>
+        <a onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-coyuntura'),80)">↳ Coyuntura</a>
+        <a onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-financieros'),80)">↳ Financieros</a>
       </div>
-      <a data-sec="servicios" onclick="nav('servicios',this)">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1l2 4 5 .7-3.5 3.4.8 4.9L8 12l-4.3 2 .8-4.9L1 5.7 6 5z"/></svg>
-        Servicios
-      </a>
       <a data-sec="sobre" onclick="nav('sobre',this)">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
         Sobre mí
@@ -224,43 +220,24 @@ section.active{display:block}
       <p class="hero-lead">Soy economista especializado en análisis macrofinanciero. Trabajo con inversores y empresas que necesitan entender el contexto económico para tomar decisiones con mayor precisión.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" onclick="nav('reportes',null)">Ver reportes →</a>
-        <a class="btn btn-outline" onclick="nav('servicios',null)">Qué ofrezco</a>
-      </div>
-    </div>
-
-    <div class="section-label">Servicios</div>
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 9h18M9 21V9"/></svg></div>
-        <h3>Consultoría económica</h3>
-        <p>Evaluación de escenarios macro para apoyar decisiones estratégicas en empresas y PyMEs.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
-        <h3>Análisis financiero</h3>
-        <p>Evaluación de portafolios, instrumentos y estrategias para inversores individuales.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-        <h3>Investigación aplicada</h3>
-        <p>Informes técnicos y análisis de políticas económicas por encargo, con rigor metodológico.</p>
+        <a class="btn btn-outline" onclick="nav('contacto',null)">Trabajemos juntos</a>
       </div>
     </div>
 
     <div class="section-label" style="margin-top:8px">Últimos reportes</div>
-    <div class="preview-card" onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-macro'),80)">
+    <div class="preview-card" onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-coyuntura'),80)">
       <div class="preview-card-body">
         <h4>Perspectivas macroeconómicas — Q1 2025</h4>
         <p>Ciclo económico, nivel de actividad, inflación y proyecciones para el primer trimestre de 2025.</p>
-        <div class="preview-meta"><span class="pdate">Mar 2025</span><span class="tag macro">Coyuntura macro</span></div>
+        <div class="preview-meta"><span class="pdate">Mar 2025</span><span class="tag macro">Coyuntura</span></div>
       </div>
       <div class="preview-arrow">→</div>
     </div>
-    <div class="preview-card" onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-mercados'),80)">
+    <div class="preview-card" onclick="nav('reportes',null);setTimeout(()=>jumpTo('area-financieros'),80)">
       <div class="preview-card-body">
         <h4>Spreads soberanos y flujos de capital</h4>
         <p>Diferenciales de riesgo, ciclo de tasas global y posicionamiento de inversores en mercados emergentes.</p>
-        <div class="preview-meta"><span class="pdate">Feb 2025</span><span class="tag mercado">Mercados financieros</span></div>
+        <div class="preview-meta"><span class="pdate">Feb 2025</span><span class="tag mercado">Financiero</span></div>
       </div>
       <div class="preview-arrow">→</div>
     </div>
@@ -269,102 +246,54 @@ section.active{display:block}
   <!-- REPORTES -->
   <section id="sec-reportes">
     <div class="page-hero">
-      <h2>Reportes de coyuntura</h2>
+      <h2>Reportes</h2>
       <p>Análisis propios sobre economía argentina e internacional. Hacé clic en cada reporte para leer su contenido.</p>
     </div>
 
-    <div class="report-area" id="area-macro">
-      <div class="area-title">Coyuntura macroeconómica</div>
+    <!-- COYUNTURA -->
+    <div class="report-area" id="area-coyuntura">
+      <div class="area-title">Reportes de coyuntura</div>
 
       <div class="report-full">
         <div class="report-full-header" onclick="toggleReport(this)">
           <div class="rh-body">
-            <div class="rh-title">Perspectivas macroeconómicas — Q1 2025</div>
-            <div class="rh-desc">Análisis del ciclo económico, nivel de actividad y proyecciones de inflación para enero–marzo 2025.</div>
-            <div class="rh-meta"><span class="pdate">Mar 2025</span><span class="tag macro">Coyuntura macro</span></div>
+            <div class="rh-title">Política monetaria — Q1 2025</div>
+            <div class="rh-desc">Análisis de la política del BCRA, tasas de interés, dinámica de la base monetaria y perspectivas para el trimestre.</div>
+            <div class="rh-meta"><span class="pdate">Mar 2025</span><span class="tag macro">Monetario</span></div>
           </div>
           <button class="rh-toggle">Leer reporte ↓</button>
         </div>
         <div class="report-sections">
           <div class="rs-item">
             <div class="rs-num">1</div>
-            <div class="rs-content"><strong>Nivel de actividad</strong><span>El EMAE acumula tres trimestres de recuperación moderada, liderada por el agro y la energía. La industria manufacturera muestra señales mixtas, con caída en bienes durables y leve recuperación en alimentos. El consumo privado se mantiene comprimido por el deterioro del salario real acumulado en 2024.</span></div>
+            <div class="rs-content"><strong>Tasa de política monetaria</strong><span>El BCRA sostuvo tasas reales positivas durante el trimestre, en línea con el objetivo de desinflación. La tasa de política monetaria se redujo gradualmente desde el 133% TNA de fines de 2023, acompañando la desaceleración inflacionaria. El spread entre tasas activas y pasivas del sistema financiero se comprimió.</span></div>
           </div>
           <div class="rs-item">
             <div class="rs-num">2</div>
-            <div class="rs-content"><strong>Inflación y precios relativos</strong><span>La inflación mensual convergió al rango 2,5–3% luego de los picos de fines de 2023. La dinámica inercial persiste en servicios y paritarias, mientras los precios regulados aún acumulan ajustes pendientes. La inflación núcleo se mantiene elevada respecto de la general.</span></div>
+            <div class="rs-content"><strong>Base monetaria y agregados</strong><span>La base monetaria mostró expansión estacional en enero y febrero, compensada por colocación de LEFIs. Los agregados más amplios (M2 y M3) crecieron por debajo de la inflación, lo que implica una contracción real de la liquidez en la economía. La demanda de dinero se recupera gradualmente.</span></div>
           </div>
           <div class="rs-item">
             <div class="rs-num">3</div>
-            <div class="rs-content"><strong>Mercado laboral</strong><span>El empleo formal privado registrado creció levemente, aunque el informal continúa en niveles históricamente altos. El salario real se recupera parcialmente desde el piso de 2024, pero aún no repone la caída acumulada. La tasa de desempleo abierta se mantiene en torno al 7%.</span></div>
+            <div class="rs-content"><strong>Pasivos remunerados del BCRA</strong><span>El stock de LEFIs continuó siendo el principal instrumento de esterilización. La reducción del déficit cuasifiscal fue uno de los logros del programa: el costo de los pasivos remunerados cayó en términos reales, aunque el stock en pesos permanece elevado como proporción del PBI.</span></div>
           </div>
           <div class="rs-item">
             <div class="rs-num">4</div>
-            <div class="rs-content"><strong>Proyecciones Q2 2025</strong><span>Escenario base: inflación mensual entre 2,5 y 3,5%, actividad con leve aceleración por estacionalidad agrícola y consumo parcialmente recompuesto. Riesgos al alza: atraso cambiario acumulado y presiones en tarifas. Riesgos a la baja: fragilidad fiscal y volatilidad financiera.</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="report-full">
-        <div class="report-full-header" onclick="toggleReport(this)">
-          <div class="rh-body">
-            <div class="rh-title">Política fiscal y dinámica de deuda — 2024</div>
-            <div class="rh-desc">Resultado primario, necesidades de financiamiento y sostenibilidad de la deuda pública en perspectiva de mediano plazo.</div>
-            <div class="rh-meta"><span class="pdate">Dic 2024</span><span class="tag macro">Coyuntura macro</span></div>
-          </div>
-          <button class="rh-toggle">Leer reporte ↓</button>
-        </div>
-        <div class="report-sections">
-          <div class="rs-item">
-            <div class="rs-num">1</div>
-            <div class="rs-content"><strong>Resultado fiscal primario</strong><span>El Sector Público Nacional alcanzó superávit primario en 2024 por primera vez en más de una década, impulsado por recorte del gasto en jubilaciones, obra pública y subsidios. El ajuste fue de naturaleza transitoria en parte: su sustentabilidad depende de reformas estructurales aún pendientes.</span></div>
-          </div>
-          <div class="rs-item">
-            <div class="rs-num">2</div>
-            <div class="rs-content"><strong>Financiamiento y perfil de vencimientos</strong><span>El Tesoro logró renovar la deuda en pesos con tasas decrecientes a medida que mejoraba la confianza. El perfil de vencimientos en moneda dura se concentra en 2026–2027, lo que genera presión sobre las reservas del BCRA y la brecha cambiaria en el corto plazo.</span></div>
-          </div>
-          <div class="rs-item">
-            <div class="rs-num">3</div>
-            <div class="rs-content"><strong>Sostenibilidad de la deuda</strong><span>Bajo el escenario base (crecimiento del 3%, inflación convergiendo y tipo de cambio estable), la relación deuda/PBI muestra trayectoria descendente. Sin embargo, es sensible a shocks cambiarios: una devaluación del 20% elevaría la carga en aproximadamente 5 p.p. del PBI.</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="report-full">
-        <div class="report-full-header" onclick="toggleReport(this)">
-          <div class="rh-body">
-            <div class="rh-title">Sector externo y balanza de pagos — 2024</div>
-            <div class="rh-desc">Exportaciones, importaciones, cuenta corriente y acumulación de reservas internacionales.</div>
-            <div class="rh-meta"><span class="pdate">Sep 2024</span><span class="tag macro">Coyuntura macro</span></div>
-          </div>
-          <button class="rh-toggle">Leer reporte ↓</button>
-        </div>
-        <div class="report-sections">
-          <div class="rs-item">
-            <div class="rs-num">1</div>
-            <div class="rs-content"><strong>Balanza comercial</strong><span>El saldo comercial acumuló un superávit récord en 2024, impulsado por la caída de importaciones (comprimidas por la recesión y las restricciones cambiarias) y la recuperación exportadora agrícola tras la sequía de 2023. Las exportaciones industriales permanecen estancadas.</span></div>
-          </div>
-          <div class="rs-item">
-            <div class="rs-num">2</div>
-            <div class="rs-content"><strong>Cuenta corriente y financiera</strong><span>La cuenta corriente registró superávit por primera vez desde 2019. Sin embargo, la cuenta financiera privada mostró salidas netas, reflejando la preferencia por activos externos ante la incertidumbre cambiaria. Las remesas de utilidades permanecieron restringidas.</span></div>
-          </div>
-          <div class="rs-item">
-            <div class="rs-num">3</div>
-            <div class="rs-content"><strong>Reservas internacionales</strong><span>Las reservas brutas del BCRA se recuperaron moderadamente gracias al superávit comercial y el acceso al FMI, pero las netas permanecen negativas. La cobertura de importaciones es aún insuficiente para garantizar la libre movilidad de capitales en el corto plazo.</span></div>
+            <div class="rs-content"><strong>Perspectivas</strong><span>El escenario base proyecta nuevas bajas de tasa a medida que la inflación converja, condicionadas al cumplimiento de las metas fiscales y a la acumulación de reservas. Un riesgo relevante es la presión cambiaria sobre las tasas si la brecha se amplía nuevamente.</span></div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="report-area" id="area-mercados">
-      <div class="area-title">Mercados financieros</div>
+    <!-- FINANCIEROS -->
+    <div class="report-area" id="area-financieros">
+      <div class="area-title">Reportes financieros</div>
 
       <div class="report-full">
         <div class="report-full-header" onclick="toggleReport(this)">
           <div class="rh-body">
             <div class="rh-title">Spreads soberanos y flujos de capital</div>
             <div class="rh-desc">Diferenciales de riesgo y movimientos de portafolios en el contexto del ciclo de tasas globales.</div>
-            <div class="rh-meta"><span class="pdate">Feb 2025</span><span class="tag mercado">Mercados financieros</span></div>
+            <div class="rh-meta"><span class="pdate">Feb 2025</span><span class="tag mercado">Financiero</span></div>
           </div>
           <button class="rh-toggle">Leer reporte ↓</button>
         </div>
@@ -393,7 +322,7 @@ section.active{display:block}
           <div class="rh-body">
             <div class="rh-title">Renta variable local: valuación y contexto macro</div>
             <div class="rh-desc">Merval en términos reales y en dólares. Valuación sectorial y drivers de corto plazo.</div>
-            <div class="rh-meta"><span class="pdate">Ene 2025</span><span class="tag mercado">Mercados financieros</span></div>
+            <div class="rh-meta"><span class="pdate">Ene 2025</span><span class="tag mercado">Financiero</span></div>
           </div>
           <button class="rh-toggle">Leer reporte ↓</button>
         </div>
@@ -418,7 +347,7 @@ section.active{display:block}
           <div class="rh-body">
             <div class="rh-title">Tipo de cambio y brecha cambiaria</div>
             <div class="rh-desc">Dinámica del tipo de cambio oficial, financiero y paralelo. Determinantes de la brecha y perspectivas de convergencia.</div>
-            <div class="rh-meta"><span class="pdate">Nov 2024</span><span class="tag mercado">Mercados financieros</span></div>
+            <div class="rh-meta"><span class="pdate">Nov 2024</span><span class="tag mercado">Financiero</span></div>
           </div>
           <button class="rh-toggle">Leer reporte ↓</button>
         </div>
@@ -436,77 +365,6 @@ section.active{display:block}
             <div class="rs-content"><strong>Tipo de cambio real multilateral</strong><span>El TCRM se apreció significativamente desde la devaluación de diciembre 2023. Argentina perdió parte de la competitividad ganada, aunque sigue por encima de los niveles de 2015–2017. El riesgo de atraso cambiario es el principal factor de vulnerabilidad externa en el mediano plazo.</span></div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVICIOS -->
-  <section id="sec-servicios">
-    <div class="page-hero">
-      <h2>Servicios</h2>
-      <p>Trabajo con inversores individuales y empresas que necesitan análisis económico riguroso y orientado a la acción.</p>
-    </div>
-
-    <div class="service-full">
-      <div class="sf-header">
-        <div class="sf-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 9h18M9 21V9"/></svg></div>
-        <div>
-          <div class="sf-title">Consultoría económica</div>
-          <div class="sf-sub">Para empresas y PyMEs</div>
-        </div>
-      </div>
-      <p class="sf-body">Análisis del contexto macroeconómico aplicado a la toma de decisiones estratégicas. Útil para planificar inversiones, negociar contratos, evaluar escenarios de precios y anticipar riesgos regulatorios o cambiarios.</p>
-      <ul class="sf-list">
-        <li>Análisis de escenarios macro a medida</li>
-        <li>Impacto de política económica en el negocio</li>
-        <li>Proyecciones de inflación y tipo de cambio</li>
-        <li>Informes ejecutivos y presentaciones</li>
-      </ul>
-      <div class="sf-cta">
-        <p>Consulta inicial sin costo para definir el alcance.</p>
-        <a class="btn btn-primary" onclick="nav('contacto',null)">Consultar →</a>
-      </div>
-    </div>
-
-    <div class="service-full">
-      <div class="sf-header">
-        <div class="sf-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
-        <div>
-          <div class="sf-title">Análisis financiero para inversores</div>
-          <div class="sf-sub">Para inversores individuales</div>
-        </div>
-      </div>
-      <p class="sf-body">Evaluación de portafolios y estrategias de inversión en el mercado local. Análisis de riesgo–retorno de instrumentos de renta fija y variable, con contexto macro integrado.</p>
-      <ul class="sf-list">
-        <li>Análisis de bonos soberanos y corporativos</li>
-        <li>Evaluación de renta variable local</li>
-        <li>Métricas de riesgo: Sharpe, VaR, volatilidad</li>
-        <li>Simulaciones de escenarios y stress tests</li>
-      </ul>
-      <div class="sf-cta">
-        <p>Adaptado a tu perfil y horizonte de inversión.</p>
-        <a class="btn btn-primary" onclick="nav('contacto',null)">Consultar →</a>
-      </div>
-    </div>
-
-    <div class="service-full">
-      <div class="sf-header">
-        <div class="sf-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-        <div>
-          <div class="sf-title">Investigación aplicada por encargo</div>
-          <div class="sf-sub">Para empresas, consultoras y organismos</div>
-        </div>
-      </div>
-      <p class="sf-body">Elaboración de informes técnicos, análisis de políticas económicas y estudios sectoriales con rigor metodológico. Incluye procesamiento de datos y visualización.</p>
-      <ul class="sf-list">
-        <li>Informes técnicos y policy papers</li>
-        <li>Análisis econométrico y series de tiempo</li>
-        <li>Procesamiento de datos (R, Python, EViews)</li>
-        <li>Visualización y dashboards</li>
-      </ul>
-      <div class="sf-cta">
-        <p>Presupuesto según alcance y plazos del proyecto.</p>
-        <a class="btn btn-primary" onclick="nav('contacto',null)">Consultar →</a>
       </div>
     </div>
   </section>
@@ -557,9 +415,9 @@ section.active{display:block}
       <div class="contact-block">
         <h4>Escribime directamente</h4>
         <p>Para consultas sobre servicios, presupuestos o para ver si puedo ayudarte con lo que necesitás.</p>
-        <a class="contact-link" href="mailto:jaroszewskivladimir@gmail.com">
+        <a class="contact-link" href="/cdn-cgi/l/email-protection#0a606b786579706f7d7961637c666b6e636763784a6d676b636624696567">
           <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><polyline points="4,4 12,13 20,4"/></svg>
-          jaroszewskivladimir@gmail.com
+          <span class="__cf_email__" data-cfemail="deb4bfacb1ada4bba9adb5b7a8b2bfbab7b3b7ac9eb9b3bfb7b2f0bdb1b3">[email&#160;protected]</span>
         </a>
         <a class="contact-link" href="https://linkedin.com/in/vladimir-jaroszewski" target="_blank">
           <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
@@ -588,7 +446,7 @@ section.active{display:block}
 </main>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function nav(sec, el) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
   document.getElementById('sec-' + sec).classList.add('active');
@@ -602,13 +460,4 @@ function toggleReport(header) {
   const sections = header.parentElement.querySelector('.report-sections');
   const btn = header.querySelector('.rh-toggle');
   const isOpen = sections.classList.toggle('open');
-  btn.textContent = isOpen ? 'Cerrar ↑' : 'Leer reporte ↓';
-}
-function jumpTo(id) {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
-}
-document.querySelector('[data-sec="inicio"]').classList.add('active');
-</script>
-</body>
-</html>
+  btn.textContent = isOpen ? 'C
