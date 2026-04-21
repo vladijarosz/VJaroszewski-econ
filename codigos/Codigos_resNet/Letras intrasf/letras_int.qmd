@@ -11,8 +11,9 @@ format:
     toc-location: right
     toc-depth: 3
     toc-title: "Contenido"
-    page-layout: article
+    page-layout: full
     smooth-scroll: true
+    include-after-body: sidebar-extra_LI.html
     css: styles.css
     include-in-header:
       - header.html
@@ -73,7 +74,8 @@ Este acuerdo se enmarcó en la denominada "Fase 3" del programa económico del g
 
 A partir del análisis de los estados contables semanales del BCRA, se puede observar el impacto
 de las operaciones descriptas sobre los principales rubros del balance. La @tbl-balance es un resumen de las serie de activos y pasivos del BCRA, donde se muestras las reservas brutas, el stock de Letras Intransferibles, los depósitos del
-Tesoro y el patrimonio neto a partir de la semana del 31 de mayo del 2025.
+Tesoro y el patrimonio neto a partir de la semana del 31 de Marzo del 2025.
+
 
 ```{python}
 #| label: tbl-balance
@@ -204,22 +206,24 @@ en aproximadamente **USD 7.500 millones**, que quedaron disponibles.
 En cuanto a las Reservas internacionales terminaron abril con 38.928 millones de usd que significo un aumento a lo largo del mes de 13.942 millones de usd.
 
 
-# Links de referencia
-[LI noticia Bloomberg](https://www.bloomberglinea.com/latinoamerica/argentina/letras-intransferibles-la-deuda-con-el-bcra-que-quiere-cancelar-milei-via-credito-del-fmi/)
+## Referencias y fuentes
 
-[LI decreto](https://www.boletinoficial.gob.ar/detalleAviso/primera/276571/20221128)
+**Letras Intransferibles (LI)**
 
+- [Cancelación de LI vía crédito del FMI — Bloomberg Línea](https://www.bloomberglinea.com/latinoamerica/argentina/letras-intransferibles-la-deuda-con-el-bcra-que-quiere-cancelar-milei-via-credito-del-fmi/)
+- [Decreto de emisión de LI — Boletín Oficial (nov. 2022)](https://www.boletinoficial.gob.ar/detalleAviso/primera/276571/20221128)
 
-[Acuerdo de facilidades con  el FMI](https://www.argentina.gob.ar/noticias/argentina-anuncia-un-programa-de-facilidades-extendidas-con-el-fondo-monetario)
-[staff report FMI](https://www.imf.org/en/countries/arg?selectedfilters=Article%20IV%20Staff%20Reports#whatsnew)
+**FMI**
 
-[estados Contables](https://www.bcra.gob.ar/estados-contables-anuales/)
+- [Anuncio del acuerdo de Facilidades Extendidas — Ministerio de Economía](https://www.argentina.gob.ar/noticias/argentina-anuncia-un-programa-de-facilidades-extendidas-con-el-fondo-monetario)
+- [Staff Report y Article IV — FMI](https://www.imf.org/en/countries/arg?selectedfilters=Article%20IV%20Staff%20Reports#whatsnew)
 
-Para accede a los estados resumidos de activos y pasivos del BCRA y ahi estan los estados contables y los resumidos.
+**BCRA**
 
-[Informes BCRA](https://www.bcra.gob.ar/informes/)
+- [Estados contables anuales — BCRA](https://www.bcra.gob.ar/estados-contables-anuales/) — incluye balances resumidos de activos y pasivos.
+- [Informes y publicaciones — BCRA](https://www.bcra.gob.ar/informes/)
 
-[Boletin Letras](https://www.boletinoficial.gob.ar/detalleAviso/primera/322325/20250311)
-[Lefi perfil](https://www.perfil.com/noticias/economia/adios-a-las-lefi-la-movida-del-banco-central-que-derrumbo-las-tasas-e-inyecto-pesos-en-el-mercado.phtml)
+**LEFI**
 
-
+- [Resolución de emisión — Boletín Oficial (mar. 2025)](https://www.boletinoficial.gob.ar/detalleAviso/primera/322325/20250311)
+- [Eliminación de las LEFI e impacto en tasas — Perfil](https://www.perfil.com/noticias/economia/adios-a-las-lefi-la-movida-del-banco-central-que-derrumbo-las-tasas-e-inyecto-pesos-en-el-mercado.phtml)

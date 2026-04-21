@@ -11,8 +11,9 @@ format:
     toc-location: right
     toc-depth: 3
     toc-title: "Contenido"
-    page-layout: article
+    page-layout: full
     smooth-scroll: true
+    include-after-body: sidebar-extra.html
     css: styles.css
     include-in-header:
       - header.html
@@ -71,8 +72,9 @@ En la práctica, existen distintos criterios utilizados en la literatura para ev
 
 
 ```{python}
-#| code-fold: true
-#| code-summary: "Mostrar código"
+#| label: tbl-reservas-netas
+#| echo: false
+#| warning: false
 
 import pandas as pd
 #Vamos cargar la data al codigo, tenemos gran parte en este excel.
@@ -214,7 +216,9 @@ df_1=df_1.fillna(0)
 
 
 df_1['Res_net']=df_1['Reservas mensuales']-df_1['encajes_ext']-df_1['swap_usd']-df_1['bop_año']-df_1['dep_Nac_ext']-df_1['otros pasivos_usd']
-df_1['Res_Super_net']=df_1['Reservas mensuales']-df_1['encajes_ext']-df_1['swap_usd']-df_1['bop_año']-df_1['dep_Nac_ext']-df_1['otros pasivos_usd']-df_1['deuda_mult']
+df_1['Res_Super_net']=df_1['Reservas mensuales']-df_1['encajes_ext']-df_1['swap_usd']-df_1['bop_año']-df_1['otros pasivos_usd']-df_1['deuda_mult']
+
+df_1=df_1.loc['2020-01-01':'2026-02-28']
 
 
 import plotly.graph_objects as go
@@ -336,7 +340,7 @@ Un caso relevante es el tratamiento de los **depósitos del Tesoro en moneda ext
 Sin embargo, si se adopta este criterio, también sería necesario considerar las **obligaciones en moneda extranjera del Tesoro en el corto plazo**, especialmente los vencimientos frente a organismos internacionales, dado que dichos compromisos también afectan la disponibilidad efectiva de divisas en la economía.
 
 
-## Cálculo de Reservas Netas
+## Cálculo de reservas netas: método "pasivos a un año vista"
 
 La relevancia de este método de cálculo radica en que permite identificar cuáles son los **verdaderos activos externos de libre disponibilidad** que posee el BCRA para hacer frente a sus obligaciones o a contingencias de corto plazo.
 
@@ -350,9 +354,9 @@ La relevancia de este método de cálculo radica en que permite identificar cuá
 | 3 | **Reservas Netas (RIN)** | Reservas Brutas − Pasivos Brutos | Posición neta del BCRA en moneda extranjera |
 | 4 | **Reservas Líquidas** | Reservas Brutas − Activos no líquidos (DEG, oro, títulos, otros) | Divisas de disponibilidad inmediata |
 
-## Cálculo de reservas netas "a un año vista" o **reservas súper netas**
+## Cálculo de  **reservas súper netas**
 
-Una extensión del cálculo anterior consiste en estimar las reservas disponibles considerando **las obligaciones que vencen en el corto plazo**, típicamente dentro de un horizonte de un año.
+Una extensión del cálculo anterior consiste en estimar las reservas disponibles considerando las obligaciones que vencen en el corto plazo, típicamente dentro de un horizonte de un año; pero esta vez considerando las **obligaciones de corto plazo del tesoro nacional en moneda extranjera**.
 
 El objetivo de este método es aproximar cuál sería la **posición efectiva de divisas del sector público** luego de considerar los compromisos inmediatos en moneda extranjera que enfrenta tanto el BCRA como el Tesoro Nacional.
 
@@ -372,8 +376,210 @@ Este enfoque es utilizado frecuentemente por analistas de mercado para evaluar l
 
 
 ```{python}
-#| code-fold: true
-#| code-summary: "Mostrar código"
+#| tbl-cap: "Reservas netas del BCRA (en millones de USD)"
+#| echo: false
+#| warning: false
+
+import pandas as pd
+from IPython.display import display, HTML
+import json
+
+df_tabla = df_1.copy()
+
+cols_orden = [
+    'Reservas mensuales', 'encajes_ext', 'swap_usd', 'bop_año',
+    'dep_Nac_ext', 'otros pasivos_usd', 'deuda_mult', 'Res_net', 'Res_Super_net',
+]
+df_tabla = df_tabla[cols_orden].round(1)
+df_tabla.index = df_tabla.index.strftime('%m/%Y')
+df_tabla = df_tabla.reset_index()
+df_tabla.columns = ['Fecha', 'Res. brutas', 'Encajes ext.', 'Swap China',
+                    'BOPreal (12m)', 'Dep. nac. USD', 'Otros pasivos',
+                    'Deuda multilat.', 'Res. netas', 'Res. súper netas']
+
+# Serializar a JSON para pasarlo al JS
+records = df_tabla.to_dict(orient='records')
+data_json = json.dumps(records)
+
+fechas = df_tabla['Fecha'].tolist()
+fecha_min = fechas[-1]   # más reciente al final
+fecha_max = fechas[0]    # más antigua al inicio
+
+html = f"""
+<div style="font-family: sans-serif; font-size: 12px;">
+
+  <!-- Selector de rango -->
+  <div style="display:flex; align-items:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
+    <div style="display:flex; align-items:center; gap:6px;">
+      <label style="color:#555;">Desde:</label>
+      <select id="sel-desde" style="font-size:12px; padding:3px 6px; border:1px solid #ccc; border-radius:4px;">
+      </select>
+    </div>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <label style="color:#555;">Hasta:</label>
+      <select id="sel-hasta" style="font-size:12px; padding:3px 6px; border:1px solid #ccc; border-radius:4px;">
+      </select>
+    </div>
+    <button onclick="resetFiltro()"
+      style="font-size:11px; padding:3px 10px; border:1px solid #aaa;
+             border-radius:4px; background:#f5f5f5; cursor:pointer;">
+      Mostrar todo
+    </button>
+    <span id="conteo" style="color:#888; font-size:11px;"></span>
+  </div>
+
+  <!-- Tabla -->
+  <div style="overflow-x:auto;">
+  <table id="tabla-res" style="border-collapse:collapse; width:100%; font-size:12px;">
+    <thead>
+      <tr style="background:#2C3E50; color:white;">
+        <th rowspan="2" style="padding:5px 8px; border:1px solid #1A252F; text-align:left; white-space:nowrap;">Fecha</th>
+        <th colspan="1" style="padding:5px 8px; border:1px solid #1A252F; text-align:center; border-left:2px solid #fff;">Activo</th>
+        <th colspan="6" style="padding:5px 8px; border:1px solid #1A252F; text-align:center; border-left:2px solid #fff;">Pasivos deducibles</th>
+        <th colspan="2" style="padding:5px 8px; border:1px solid #1A252F; text-align:center; border-left:2px solid #fff;">Netas</th>
+      </tr>
+      <tr style="background:#2C3E50; color:white;">
+        <th style="padding:5px 8px; border:1px solid #1A252F; text-align:right; white-space:nowrap; border-left:2px solid #fff;">Res. brutas</th>
+        <th style="padding:5px 8px; border:1px solid #1A252F; text-align:right; white-space:nowrap; border-left:2px solid #fff;">Encajes ext.</th>
+        <th style="padding:5px 8px; border:1px solid #1A252F; text-align:right; white-space:nowrap;">Swap China</th>
+        <th style="padding:5px 8px; border:1px solid #1A252F; text-align:right; white-space:nowrap;">BOPreal (12m)</th>
+        <th style="padding:5px 8px; border:1px solid #1A252F; text-align:right; white-space:nowrap;">Dep. nac. USD</th>
+        <th style="padding:5px 8px; border:1px solid #1A252F; text-align:right; white-space:nowrap;">Otros pasivos</th>
+        <th style="padding:5px 8px; border:1px solid #1A252F; text-align:right; white-space:nowrap;">Deuda multilat.</th>
+        <th style="padding:5px 8px; border:1px solid #1A252F; text-align:right; white-space:nowrap; border-left:2px solid #fff;">Res. netas</th>
+        <th style="padding:5px 8px; border:1px solid #1A252F; text-align:right; white-space:nowrap;">Res. súper netas</th>
+      </tr>
+    </thead>
+    <tbody id="tbody-res"></tbody>
+  </table>
+  </div>
+
+  <!-- Leyenda -->
+  <div style="font-size:11px; color:#555; padding-top:8px; line-height:1.8;">
+    <b>Metodología:</b><br>
+    <b>Res. netas</b> = Res. brutas − Encajes ext. − Swap China − BOPreal (12m) − Dep. nac. USD − Otros pasivos<br>
+    <b>Res. súper netas</b> = Res. netas + Depositos Nac. USD − Deuda multilaterales (próximos 12 meses)<br>
+    <br>
+    <span style="display:inline-block;width:12px;height:12px;background:#D5F5E3;border:1px solid #aaa;margin-right:4px;vertical-align:middle;"></span>
+    Reservas netas <b>positivas</b> &nbsp;
+    <span style="display:inline-block;width:12px;height:12px;background:#FADBD8;border:1px solid #aaa;margin-right:4px;vertical-align:middle;"></span>
+    Reservas netas <b>negativas</b><br>
+    <i>Fuente: elaboración propia a partir de BCRA, FMI y MECON. Cifras en millones de USD.</i>
+  </div>
+</div>
+
+<script>
+const DATA = {data_json};
+
+const COLS = ['Res. brutas','Encajes ext.','Swap China','BOPreal (12m)',
+              'Dep. nac. USD','Otros pasivos','Deuda multilat.','Res. netas','Res. súper netas'];
+
+const COLS_NEG_CHECK = ['Res. netas','Res. súper netas'];
+
+// Parsear MM/YYYY → número comparable YYYYMM
+function parsefecha(f) {{
+  const [m, y] = f.split('/');
+  return parseInt(y) * 100 + parseInt(m);
+}}
+
+function fmt(v) {{
+  if (v === null || v === undefined || v === '') return '–';
+  const n = parseFloat(v);
+  if (isNaN(n)) return v;
+  return n.toLocaleString('es-AR', {{minimumFractionDigits:0, maximumFractionDigits:1}});
+}}
+
+function poblarSelects() {{
+  const fechas = DATA.map(r => r['Fecha']);
+  ['sel-desde','sel-hasta'].forEach(id => {{
+    const sel = document.getElementById(id);
+    fechas.forEach(f => {{
+      const opt = document.createElement('option');
+      opt.value = f;
+      opt.text  = f;
+      sel.appendChild(opt);
+    }});
+  }});
+  const ultima  = fechas[fechas.length - 1];
+  const defDesde = fechas[Math.max(0, fechas.length - 4)];
+  document.getElementById('sel-desde').value = defDesde;
+  document.getElementById('sel-hasta').value  = ultima;
+}}
+
+function renderTabla() {{
+  const desde = parsefecha(document.getElementById('sel-desde').value);
+  const hasta  = parsefecha(document.getElementById('sel-hasta').value);
+
+  const filas = DATA.filter(r => {{
+    const f = parsefecha(r['Fecha']);
+    return f >= desde && f <= hasta;
+  }});
+
+  document.getElementById('conteo').textContent = filas.length + ' períodos';
+
+  const tbody = document.getElementById('tbody-res');
+  tbody.innerHTML = '';
+
+  filas.forEach(row => {{
+    const rn = parseFloat(row['Res. netas']);
+    const bgRow = rn < 0 ? '#FADBD8' : '#D5F5E3';
+
+    const tr = document.createElement('tr');
+    tr.style.background = bgRow;
+    tr.addEventListener('mouseover', () => tr.style.background = '#F2F3F4');
+    tr.addEventListener('mouseout',  () => tr.style.background = bgRow);
+
+    // Fecha
+    const tdF = document.createElement('td');
+    tdF.style.cssText = 'padding:4px 8px; border-bottom:1px solid #D5D8DC; font-weight:500; white-space:nowrap; text-align:left;';
+    tdF.textContent = row['Fecha'];
+    tr.appendChild(tdF);
+
+    // Columnas numéricas
+    COLS.forEach((col, i) => {{
+      const td = document.createElement('td');
+      const val = parseFloat(row[col]);
+      const isNeg = !isNaN(val) && val < 0;
+      let borderLeft = '';
+      if (col === 'Res. brutas' || col === 'Encajes ext.' || col === 'Res. netas') {{
+        borderLeft = 'border-left:2px solid #2C3E50;';
+      }}
+      td.style.cssText = 'padding:4px 8px; border-bottom:1px solid #D5D8DC; text-align:right; white-space:nowrap;' + borderLeft;
+      if (isNeg) {{
+        td.style.color = '#C0392B';
+        td.style.fontWeight = '500';
+      }}
+      td.textContent = fmt(row[col]);
+      tr.appendChild(td);
+    }});
+
+    tbody.appendChild(tr);
+  }});
+}}
+
+function resetFiltro() {{
+  const fechas = DATA.map(r => r['Fecha']);
+  document.getElementById('sel-desde').value = fechas[0];
+  document.getElementById('sel-hasta').value  = fechas[fechas.length - 1];
+  renderTabla();
+}}
+
+document.getElementById('sel-desde').addEventListener('change', renderTabla);
+document.getElementById('sel-hasta').addEventListener('change', renderTabla);
+
+poblarSelects();
+renderTabla();
+</script>
+"""
+
+display(HTML(html))
+```
+
+
+```{python}
+#| tbl-cap: "Reservas netas del BCRA (en millones de USD)"
+#| echo: false
+#| warning: false
 
 import plotly.graph_objects as go
 
@@ -468,17 +674,16 @@ fig.show()
 
 ```
 
+## Fuentes y referencias
 
-## Links para obtener los datos
+**Datos utilizados**
 
-[Balance diario](https://www.bcra.gob.ar/PublicacionesEstadisticas/Cuadros_estandarizados_series_estadisticas.asp)
+- [Balance de divisas diario — BCRA](https://www.bcra.gob.ar/PublicacionesEstadisticas/Cuadros_estandarizados_series_estadisticas.asp)
+- [Deuda con organismos multilaterales — Secretaría de Finanzas](https://www.argentina.gob.ar/economia/finanzas/datos-trimestrales-de-la-deuda)
+- [Balance y agregados monetarios — BCRA](https://www.bcra.gob.ar/balances-y-agregados-monetarios/)
 
-[Deuda con Organismos Multilaterales](https://www.argentina.gob.ar/economia/finanzas/datos-trimestrales-de-la-deuda)
+**Referencias adicionales**
 
-[Balance BCRA](https://www.bcra.gob.ar/balances-y-agregados-monetarios/)
-
-[acuerdo Fondo](https://www.argentina.gob.ar/noticias/argentina-anuncia-un-programa-de-facilidades-extendidas-con-el-fondo-monetario)
-
-[Noticia Chequeado, acuerdo fondo](https://chequeado.com/el-explicador/acuerdo-con-el-fmi-que-implica-el-nuevo-endeudamiento-que-negocia-el-gobierno-de-javier-milei/)
-
+- [Programa de Facilidades Extendidas con el FMI — Ministerio de Economía](https://www.argentina.gob.ar/noticias/argentina-anuncia-un-programa-de-facilidades-extendidas-con-el-fondo-monetario)
+- [Acuerdo con el FMI: alcances e implicancias del nuevo endeudamiento — Chequeado](https://chequeado.com/el-explicador/acuerdo-con-el-fmi-que-implica-el-nuevo-endeudamiento-que-negocia-el-gobierno-de-javier-milei/)
 

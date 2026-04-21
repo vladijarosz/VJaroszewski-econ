@@ -1,0 +1,182 @@
+<style>
+@media (prefers-color-scheme: dark) {
+  .bm-box { background: #2C2C2A; border-color: #5F5E5A; }
+  .bm-label { color: #D3D1C7; }
+  .bm-sub { color: #888780; }
+  .divider { background: #5F5E5A; }
+  .identity-box { background: #2C2C2A; border-color: #5F5E5A; }
+  .eq-line { background: #5F5E5A; }
+}
+.col-wrap { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: start; padding: 1rem 0 0; }
+.col { border-radius: 12px; padding: 0; overflow: hidden; }
+.col-fuente { border: 0.5px solid #0F6E56; background: #E1F5EE; }
+.col-absorb { border: 0.5px solid #993C1D; background: #FAECE7; }
+@media (prefers-color-scheme: dark) {
+  .col-fuente { border-color: #1D9E75; background: #04342C; }
+  .col-absorb { border-color: #D85A30; background: #4A1B0C; }
+}
+.col-header { padding: 12px 16px 10px; border-bottom: 0.5px solid; }
+.col-fuente .col-header { border-color: #0F6E56; background: #9FE1CB; }
+.col-absorb .col-header { border-color: #993C1D; background: #F5C4B3; }
+@media (prefers-color-scheme: dark) {
+  .col-fuente .col-header { border-color: #1D9E75; background: #085041; }
+  .col-absorb .col-header { border-color: #D85A30; background: #712B13; }
+}
+.col-title { font-size: 13px; font-weight: 500; margin: 0 0 2px; }
+.col-fuente .col-title { color: #085041; }
+.col-absorb .col-title { color: #712B13; }
+@media (prefers-color-scheme: dark) {
+  .col-fuente .col-title { color: #9FE1CB; }
+  .col-absorb .col-title { color: #F5C4B3; }
+}
+.col-subtitle { font-size: 11px; margin: 0; }
+.col-fuente .col-subtitle { color: #0F6E56; }
+.col-absorb .col-subtitle { color: #993C1D; }
+@media (prefers-color-scheme: dark) {
+  .col-fuente .col-subtitle { color: #5DCAA5; }
+  .col-absorb .col-subtitle { color: #F0997B; }
+}
+.section { padding: 10px 14px 8px; border-bottom: 0.5px solid; }
+.col-fuente .section { border-color: #9FE1CB; }
+.col-absorb .section { border-color: #F5C4B3; }
+@media (prefers-color-scheme: dark) {
+  .col-fuente .section { border-color: #085041; }
+  .col-absorb .section { border-color: #712B13; }
+}
+.section:last-child { border-bottom: none; }
+.sec-title { font-size: 12px; font-weight: 500; margin: 0 0 5px; }
+.col-fuente .sec-title { color: #085041; }
+.col-absorb .sec-title { color: #712B13; }
+@media (prefers-color-scheme: dark) {
+  .col-fuente .sec-title { color: #9FE1CB; }
+  .col-absorb .sec-title { color: #F0997B; }
+}
+.item { font-size: 11px; color: #0F6E56; line-height: 1.6; display: flex; align-items: baseline; gap: 5px; }
+.col-absorb .item { color: #993C1D; }
+@media (prefers-color-scheme: dark) {
+  .col-fuente .item { color: #5DCAA5; }
+  .col-absorb .item { color: #F0997B; }
+}
+.item::before { content: "–"; opacity: 0.5; flex-shrink: 0; }
+.center-col { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 10px; gap: 8px; min-width: 80px; padding-top: 48px; }
+.bm-card { border: 1.5px solid var(--color-border-secondary); border-radius: 10px; background: var(--color-background-primary); padding: 12px 14px; text-align: center; width: 76px; }
+.bm-main { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.bm-def { font-size: 10px; color: var(--color-text-secondary); margin: 0; line-height: 1.4; }
+.arrow-up { font-size: 16px; color: #0F6E56; }
+.arrow-down { font-size: 16px; color: #993C1D; }
+@media (prefers-color-scheme: dark) {
+  .arrow-up { color: #5DCAA5; }
+  .arrow-down { color: #F0997B; }
+}
+.connector { width: 1px; height: 20px; background: var(--color-border-secondary); }
+.identity { margin: 14px 0 0; border: 0.5px solid var(--color-border-secondary); border-radius: 10px; background: var(--color-background-secondary); padding: 12px 16px; font-size: 11px; color: var(--color-text-secondary); }
+.identity p { margin: 0 0 4px; line-height: 1.7; }
+.identity p:last-child { margin: 0; }
+.eq { font-weight: 500; color: var(--color-text-primary); }
+.identity-divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 6px 0; }
+.badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 4px; margin-left: 4px; }
+.badge-teal { background: #9FE1CB; color: #085041; }
+.badge-coral { background: #F5C4B3; color: #712B13; }
+@media (prefers-color-scheme: dark) {
+  .badge-teal { background: #085041; color: #9FE1CB; }
+  .badge-coral { background: #712B13; color: #F5C4B3; }
+}
+</style>
+
+<h2 class="sr-only">Esquema de factores de variación de la base monetaria del BCRA: fuentes de creación y fuentes de absorción</h2>
+
+<div class="col-wrap">
+
+<div class="col col-fuente">
+  <div class="col-header">
+    <p class="col-title">Fuentes de creación <span class="badge badge-teal">expanden BM</span></p>
+    <p class="col-subtitle">Incremento del activo o reducción del pasivo no monetario</p>
+  </div>
+
+  <div class="section">
+    <p class="sec-title">Activos externos netos</p>
+    <p class="item">Compras netas de divisas en el MLC</p>
+    <p class="item">Resultado de operaciones de cambio</p>
+    <p class="item">Variación neta en posición de oro</p>
+    <p class="item">Asignaciones de DEG (FMI)</p>
+    <p class="item">Convenios multilaterales (ALADI / SML)</p>
+  </div>
+
+  <div class="section">
+    <p class="sec-title">Crédito al Gobierno Nacional</p>
+    <p class="item">Adelantos transitorios (art. 20 CO)</p>
+    <p class="item">Transferencia de utilidades contables</p>
+    <p class="item">Compras de títulos en mercado secundario</p>
+    <p class="item">Títulos recibidos en canjes (bonos CER, duales)</p>
+    <p class="item">Letras Intransferibles recibidas</p>
+  </div>
+
+  <div class="section">
+    <p class="sec-title">Crédito al sistema financiero</p>
+    <p class="item">Pases activos con entidades financieras</p>
+    <p class="item">Redescuentos y adelantos por iliquidez</p>
+  </div>
+
+  <div class="section">
+    <p class="sec-title">Otros activos</p>
+    <p class="item">Aportes a organismos internacionales</p>
+    <p class="item">Ejecución de puts sobre títulos públicos</p>
+  </div>
+</div>
+
+<div class="center-col">
+  <div class="arrow-up">↑</div>
+  <div class="bm-card">
+    <p class="bm-main">B M</p>
+    <p class="bm-def">Circulación monetaria + cta. cte. bancos en BCRA</p>
+  </div>
+  <div class="arrow-down">↓</div>
+</div>
+
+<div class="col col-absorb">
+  <div class="col-header">
+    <p class="col-title">Fuentes de absorción <span class="badge badge-coral">contraen BM</span></p>
+    <p class="col-subtitle">Reducción del activo o incremento del pasivo no monetario</p>
+  </div>
+
+  <div class="section">
+    <p class="sec-title">Pasivos remunerados del BCRA</p>
+    <p class="item">Pases pasivos con entidades financieras</p>
+    <p class="item">LELIQ y NOTALIQ (2018–ene 2024)</p>
+    <p class="item">Letras Fiscales de Liquidez — LEFI (jul 2024–jul 2025)</p>
+    <p class="item">BOPREAL en pesos (desde dic 2023)</p>
+    <p class="item">LEGAR (letras en pesos dollar-linked)</p>
+  </div>
+
+  <div class="section">
+    <p class="sec-title">Depósitos del sector público</p>
+    <p class="item">Cuenta corriente del Gobierno Nacional en BCRA</p>
+    <p class="item">Depósitos de ANSES y organismos previsionales</p>
+    <p class="item">Depósitos de provincias y fondos especiales</p>
+    <p class="item">Garantía LEFI (Secretaría de Hacienda, Decreto 602/24)</p>
+  </div>
+
+  <div class="section">
+    <p class="sec-title">Obligaciones con el exterior</p>
+    <p class="item">Obligaciones con organismos internacionales (FMI, BIS)</p>
+    <p class="item">Swap de monedas con el Banco Popular de China</p>
+    <p class="item">Asignaciones de DEG (contrapartida pasiva)</p>
+  </div>
+
+  <div class="section">
+    <p class="sec-title">Otros pasivos no monetarios</p>
+    <p class="item">Cuentas corrientes en moneda extranjera de bancos</p>
+    <p class="item">Aportes a organismos (contrapartida)</p>
+    <p class="item">Otros pasivos varios</p>
+  </div>
+</div>
+
+</div>
+
+<div class="identity">
+  <p><span class="eq">Activo total</span> = Activos externos netos &nbsp;+&nbsp; Crédito al Gob. Nac. &nbsp;+&nbsp; Crédito al sist. financiero &nbsp;+&nbsp; Otros activos</p>
+  <hr class="identity-divider">
+  <p><span class="eq">Pasivo total</span> = Base monetaria &nbsp;+&nbsp; Pasivos remunerados &nbsp;+&nbsp; Depósitos sector público &nbsp;+&nbsp; Oblig. con el exterior &nbsp;+&nbsp; Otros pasivos no monetarios &nbsp;+&nbsp; Patrimonio neto</p>
+  <hr class="identity-divider">
+  <p style="color: var(--color-text-primary);">Cualquier operación que <span class="eq">sube el activo</span> o <span class="eq">baja un pasivo no monetario</span> &rarr; expande la base monetaria. Lo inverso la contrae.</p>
+</div>
