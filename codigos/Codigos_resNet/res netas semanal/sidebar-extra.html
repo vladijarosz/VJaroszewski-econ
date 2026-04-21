@@ -1,0 +1,30 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const toc = document.querySelector("#TOC");
+  if (!toc) return;
+
+  const bloque = document.createElement("div");
+  bloque.style.cssText = "margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid #e0e0e0; font-family:sans-serif;";
+  bloque.innerHTML = `
+    <div style="font-size:10px; font-weight:700; letter-spacing:0.08em; color:#2C3E50;
+                text-transform:uppercase; margin-bottom:12px; padding-bottom:6px;
+                border-bottom:2px solid #2C3E50;">
+      Reportes relacionados
+    </div>
+
+    <div style="font-size:9px; font-weight:700; letter-spacing:0.06em; color:#185FA5;
+                text-transform:uppercase; margin:10px 0 6px;">
+      Politica Monetaria
+    </div>
+    <a href="https://vladimir-jaroszewski.github.io/codigos/Codigos_resNet/Letras%20intrasf/letras_int.html" target="_blank"
+       style="display:block; padding:5px 8px; border-left:3px solid #185FA5;
+              background:#f0f6fd; text-decoration:none; margin-bottom:5px;
+              line-height:1.4; border-radius:0 3px 3px 0;">
+      <div style="font-size:11px; color:#0C447C; font-weight:600;">Letras Intransferibles</div>
+      <div style="font-size:10px; color:#555;">BCRA y el acuerdo con el FMI</div>
+    </a>
+  `;
+
+  toc.insertBefore(bloque, toc.firstChild);
+});
+</script>
